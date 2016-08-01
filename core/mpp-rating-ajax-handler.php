@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ravi
- * Date: 13/7/16
- * Time: 8:12 PM
- */
+
 class MPP_Media_Rating_Ajax_Handler {
 
 	public function __construct() {

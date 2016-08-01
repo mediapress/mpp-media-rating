@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 jQuery(function($) {
-    
+
     url = MPP_RATING.ajax_url, _nonce = MPP_RATING._nonce;
 
     $('.mpp-media-rating').rateit({resetable:false});
@@ -45,36 +45,36 @@ jQuery(function($) {
 });
 
 function mpp_media_rating_get_rated_medias() {
-	
+
     var media_ids = jQuery.cookie( 'mpp_media_rated_medias' ) ? jQuery.cookie( 'mpp_media_rated_medias').split(',').map(function(i){return parseInt(i,10)}) : [];
-    
+
     return media_ids;
-    
+
 }
 
 function mpp_media_rating_exists( media_id ) {
-   
+
     var media_ids = mpp_media_rating_get_rated_medias();
-        
+
     if( jQuery.inArray( parseInt( media_id, 10 ), media_ids ) ==  -1 ) {
         return false;
     }
-    	
+
     return true;
 
 }
 
 function mpp_media_rating_store( media_id ) {
-     
+
     if ( mpp_media_rating_exists( media_id ) ) {
-	    return false;
+        return false;
     }
-    	
+
     //alerady existing?
     var media_ids = mpp_media_rating_get_rated_medias();
-	
+
     media_ids.push( media_id );
-    	
+
     jQuery.cookie( 'mpp_media_rated_medias', media_ids.join( ',' ), { expires: 1 } ) ;
-    		
+
 }

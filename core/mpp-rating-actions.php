@@ -1,44 +1,44 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
 class MPP_Media_Rating_Actions_Helper {
-	
+
     private static $instance = null;
-	
+
     private function __construct() {
-		$this->setup();
+        $this->setup();
     }
-	
+
     public function setup() {
 
         add_action( 'mpp_media_meta', array( $this, 'media_rating_star' ) );
-	    add_action( 'mpp_lightbox_media_meta', array( $this, 'lb_media_rating_star' ) );
-	    //add_action( 'mpp_gallery_meta', array( $this, 'gallery_rating_star' ) );
-	    //add_action( 'mpp_lightbox_gallery_meta', array( $this, 'gallery_rating_star' ) );
+        add_action( 'mpp_lightbox_media_meta', array( $this, 'lb_media_rating_star' ) );
+        //add_action( 'mpp_gallery_meta', array( $this, 'gallery_rating_star' ) );
+        //add_action( 'mpp_lightbox_gallery_meta', array( $this, 'gallery_rating_star' ) );
         add_action( 'mpp_after_lightbox_media', array( $this, 'execute_script' ) );
 
-			
+
     }
-		
+
     public static function get_instance() {
-		
-	    if ( is_null( self::$instance ) ) {
+
+        if ( is_null( self::$instance ) ) {
             self::$instance = new self ();
         }
-		
-	    return self::$instance;
-	
+
+        return self::$instance;
+
     }
-	
+
     public function media_rating_star( $media = null ) {
 
         $media  = mpp_get_media( $media );
-        
+
         if ( is_null( $media ) || ! mpp_is_valid_media( $media->id ) ) {
             return;
         }
@@ -49,7 +49,7 @@ class MPP_Media_Rating_Actions_Helper {
             $this->add_interface( $media->id );
         } elseif ( mpp_is_single_gallery() && in_array( 'single_gallery', $appearance ) ) {
             $this->add_interface( $media->id );
-        } 
+        }
 
     }
 
@@ -80,7 +80,7 @@ class MPP_Media_Rating_Actions_Helper {
 
     public function execute_script( $media = null ) {
 
-    ?>
+        ?>
         <script type="text/javascript">
 
             jQuery(".mpp-media-rating").rateit({resetable:false});
@@ -114,7 +114,7 @@ class MPP_Media_Rating_Actions_Helper {
 
         </script>
 
-    <?php
+        <?php
     }
 
 }
