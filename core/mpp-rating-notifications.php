@@ -16,7 +16,7 @@ Class MPP_Rating_Notifications {
 
 		$media = mpp_get_media( $media_id );
 
-		if ( is_null( $media ) || ! buddypress() || ! bp_is_active('notifications') ) {
+		if ( is_null( $media ) || ! buddypress() || ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
 
@@ -31,7 +31,7 @@ Class MPP_Rating_Notifications {
 		) );
 
 		if ( $notification_id ) {
-			bp_notifications_add_meta( $notification_id, '_user_vote' , $vote );
+			bp_notifications_add_meta( $notification_id, '_user_vote', $vote );
 		}
 
 		return;
@@ -39,24 +39,24 @@ Class MPP_Rating_Notifications {
 
 	public function setup_globals() {
 
-		if( ! bp_is_active( 'notifications' ) ) {
+		if ( ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
 
 		$bp = buddypress();
 
-		$bp->mpp_rating_notifier = new stdClass();
-		$bp->mpp_rating_notifier->id = 'mpp_rating_notifier';
-		$bp->mpp_rating_notifier->slug = BP_MPP_RATING_NOTIFIER_SLUG;
-		$bp->mpp_rating_notifier->notification_callback = array( $this, 'format_notifications' );
-		$bp->active_components[$bp->mpp_rating_notifier->id] = 1;// $bp->mpp_rating_notifier->id;
+		$bp->mpp_rating_notifier                               = new stdClass();
+		$bp->mpp_rating_notifier->id                           = 'mpp_rating_notifier';
+		$bp->mpp_rating_notifier->slug                         = BP_MPP_RATING_NOTIFIER_SLUG;
+		$bp->mpp_rating_notifier->notification_callback        = array( $this, 'format_notifications' );
+		$bp->active_components[ $bp->mpp_rating_notifier->id ] = 1;// $bp->mpp_rating_notifier->id;
 
 	}
 
 	public function format_notifications( $action, $item_id, $secondary_item_id, $total_items, $format = 'string', $notification_id ) {
 
 
-		if ( $action != 'new_mpp_ratings_'. $item_id ) {
+		if ( $action != 'new_mpp_ratings_' . $item_id ) {
 			return;
 		}
 
@@ -68,10 +68,10 @@ Class MPP_Rating_Notifications {
 
 		$name = ( $name ) ? $name : __( 'Anonymous User', 'mpp-media-rating' );
 
-		$link = mpp_get_media_permalink( $item_id );
+		$link  = mpp_get_media_permalink( $item_id );
 		$title = mpp_get_media_title( $item_id );
 
-		$text = sprintf( __('<a href="%s"> %s has rated %d star on %s </a>', 'buddy-wall'), $link, $name, $vote_given, $title );
+		$text = sprintf( __( '<a href="%s"> %s has rated %d star on %s </a>', 'buddy-wall' ), $link, $name, $vote_given, $title );
 
 		return $text;
 	}
@@ -84,9 +84,9 @@ Class MPP_Rating_Notifications {
 
 		$bp = buddypress();
 
-		$component_action = 'new_mpp_ratings_'.mpp_get_current_media_id();
+		$component_action = 'new_mpp_ratings_' . mpp_get_current_media_id();
 
-		bp_notifications_mark_notifications_by_type( bp_loggedin_user_id(), $bp->mpp_rating_notifier->id , $component_action , false  );
+		bp_notifications_mark_notifications_by_type( bp_loggedin_user_id(), $bp->mpp_rating_notifier->id, $component_action, false );
 
 	}
 
@@ -94,12 +94,13 @@ Class MPP_Rating_Notifications {
 
 		$bp = buddypress();
 
-		$component_action = 'new_mpp_ratings_'.$item_id;
+		$component_action = 'new_mpp_ratings_' . $item_id;
 
 		bp_notifications_delete_notifications_by_item_id( false, $item_id, $bp->mpp_rating_notifier->id, $component_action );
 
 	}
 
 }
+
 new MPP_Rating_Notifications();
 

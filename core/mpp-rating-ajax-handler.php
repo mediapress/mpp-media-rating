@@ -10,9 +10,9 @@ class MPP_Media_Rating_Ajax_Handler {
 
 	public function vote_me() {
 
-		$media_id   = absint( $_POST['media_id'] );
-		$_nonce     = $_POST['_nonce'];
-		$vote       = absint( $_POST['vote'] );
+		$media_id = absint( $_POST['media_id'] );
+		$_nonce   = $_POST['_nonce'];
+		$vote     = absint( $_POST['vote'] );
 
 		if ( ! wp_verify_nonce( $_nonce, 'mpp-media-rating' ) ) {
 
@@ -44,9 +44,9 @@ class MPP_Media_Rating_Ajax_Handler {
 		}
 
 		$data = array(
-			'media_id'  => $media_id,
-			'user_id'   => $user_id,
-			'votes'     => $vote
+			'media_id' => $media_id,
+			'user_id'  => $user_id,
+			'votes'    => $vote
 		);
 
 		$insert = $wpdb->insert( $table_name, $data );
@@ -65,4 +65,5 @@ class MPP_Media_Rating_Ajax_Handler {
 	}
 
 }
+
 new MPP_Media_Rating_Ajax_Handler();

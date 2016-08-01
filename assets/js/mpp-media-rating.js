@@ -3,21 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-jQuery(function($) {
+jQuery(function ($) {
 
     url = MPP_RATING.ajax_url, _nonce = MPP_RATING._nonce;
 
-    $('.mpp-media-rating').rateit({resetable:false});
+    $('.mpp-media-rating').rateit({resetable: false});
 
-    $('.mpp-media-rating').bind('rated',function (event, value) {
+    $('.mpp-media-rating').bind('rated', function (event, value) {
 
         var $this = $(this),
             media_id = $this.attr('data-media-id');
 
         $this.rateit('readonly', true);
 
-        if ( ! MPP_RATING.is_user_logged_in && mpp_media_rating_exists( media_id ) ) {
-            console.log( "Already rated! media" );
+        if (!MPP_RATING.is_user_logged_in && mpp_media_rating_exists(media_id)) {
+            console.log("Already rated! media");
             return false;
         }
 
@@ -28,17 +28,17 @@ jQuery(function($) {
             vote: value
         };
 
-        $.post( url, data, function( resp ) {
+        $.post(url, data, function (resp) {
 
-            if( resp.type == 'error' ) {
+            if (resp.type == 'error') {
                 console.log(resp.message);
-            } else if( resp.type == 'success' ){
+            } else if (resp.type == 'success') {
                 console.log(resp.message);
-                $($this).rateit( 'value', resp.message.average_vote );
-                mpp_media_rating_store( media_id );
+                $($this).rateit('value', resp.message.average_vote);
+                mpp_media_rating_store(media_id);
             }
 
-        },'json');
+        }, 'json');
 
     });
 
@@ -46,17 +46,19 @@ jQuery(function($) {
 
 function mpp_media_rating_get_rated_medias() {
 
-    var media_ids = jQuery.cookie( 'mpp_media_rated_medias' ) ? jQuery.cookie( 'mpp_media_rated_medias').split(',').map(function(i){return parseInt(i,10)}) : [];
+    var media_ids = jQuery.cookie('mpp_media_rated_medias') ? jQuery.cookie('mpp_media_rated_medias').split(',').map(function (i) {
+        return parseInt(i, 10)
+    }) : [];
 
     return media_ids;
 
 }
 
-function mpp_media_rating_exists( media_id ) {
+function mpp_media_rating_exists(media_id) {
 
     var media_ids = mpp_media_rating_get_rated_medias();
 
-    if( jQuery.inArray( parseInt( media_id, 10 ), media_ids ) ==  -1 ) {
+    if (jQuery.inArray(parseInt(media_id, 10), media_ids) == -1) {
         return false;
     }
 
@@ -64,17 +66,17 @@ function mpp_media_rating_exists( media_id ) {
 
 }
 
-function mpp_media_rating_store( media_id ) {
+function mpp_media_rating_store(media_id) {
 
-    if ( mpp_media_rating_exists( media_id ) ) {
+    if (mpp_media_rating_exists(media_id)) {
         return false;
     }
 
     //alerady existing?
     var media_ids = mpp_media_rating_get_rated_medias();
 
-    media_ids.push( media_id );
+    media_ids.push(media_id);
 
-    jQuery.cookie( 'mpp_media_rated_medias', media_ids.join( ',' ), { expires: 1 } ) ;
+    jQuery.cookie('mpp_media_rated_medias', media_ids.join(','), {expires: 1});
 
 }
