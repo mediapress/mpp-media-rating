@@ -47,7 +47,7 @@ function mpp_rating_current_user_can_rate() {
 }
 
 /**
- * Is given media ratable
+ * Is given media rateable
  * Checks based on component/type
  * @param $media_id
  *
@@ -67,8 +67,8 @@ function mpp_rating_is_media_rateable( $media_id ) {
 
 	$can_be_rated = true;
 
-	$component_can_be_rated = (array) mpp_get_option( 'mpp-rating-ratable-components' );
-	$type_can_be_rated      = (array) mpp_get_option( 'mpp-rating-ratable-types' );
+	$component_can_be_rated = (array) mpp_get_option( 'mpp-rating-rateable-components' );
+	$type_can_be_rated      = (array) mpp_get_option( 'mpp-rating-rateable-types' );
 
 	if ( ! $component_can_be_rated || ! $type_can_be_rated ) {
 		$can_be_rated = false;

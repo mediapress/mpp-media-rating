@@ -31,13 +31,13 @@ class MPP_Media_Rating_Admin {
 
 		$fields = array(
 			array(
-				'name'		=> 'mpp-rating-ratable-components',
+				'name'		=> 'mpp-rating-rateable-components',
 				'label'		=> __( 'Enabled for Components', 'mpp-media-rating' ),
 				'type'		=> 'multicheck',
 				'options'	=> $rateable_components
 			),
 			array(
-				'name'		=> 'mpp-rating-ratable-types',
+				'name'		=> 'mpp-rating-rateable-types',
 				'label'		=> __( 'Enabled for Types', 'mpp-media-rating' ),
 				'type'		=> 'multicheck',
 				'options'	=> $rateable_types
