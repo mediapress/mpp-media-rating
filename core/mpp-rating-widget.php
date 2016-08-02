@@ -148,7 +148,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		<p>
 			<?php _e( 'Select Component: ', 'mpp-media-rating' ); ?>
 
-			<?php foreach ( mpp_rating_get_component_can_be_rated() as $key => $label ) : ?>
+			<?php foreach ( mpp_rating_get_rateable_components() as $key => $label ) : ?>
 
 				<label>
 

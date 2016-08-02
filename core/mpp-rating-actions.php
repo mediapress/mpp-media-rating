@@ -1,10 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 class MPP_Media_Rating_Actions_Helper {
 
@@ -15,9 +10,10 @@ class MPP_Media_Rating_Actions_Helper {
 	}
 
 	public function setup() {
-
-		add_action( 'mpp_media_meta', array( $this, 'media_rating_star' ) );
-		add_action( 'mpp_lightbox_media_meta', array( $this, 'lb_media_rating_star' ) );
+		//add to the media entry in the loop
+		add_action( 'mpp_media_meta', array( $this, 'add_stars' ) );
+		//add to media entry in lightbox
+		add_action( 'mpp_lightbox_media_meta', array( $this, 'add_lightbox_stars' ) );
 		//add_action( 'mpp_gallery_meta', array( $this, 'gallery_rating_star' ) );
 		//add_action( 'mpp_lightbox_gallery_meta', array( $this, 'gallery_rating_star' ) );
 		add_action( 'mpp_after_lightbox_media', array( $this, 'execute_script' ) );
@@ -35,7 +31,7 @@ class MPP_Media_Rating_Actions_Helper {
 
 	}
 
-	public function media_rating_star( $media = null ) {
+	public function add_stars( $media = null ) {
 
 		$media = mpp_get_media( $media );
 
@@ -43,7 +39,7 @@ class MPP_Media_Rating_Actions_Helper {
 			return;
 		}
 
-		$appearance = (array) mpp_get_option( 'appearance' );
+		$appearance = (array) mpp_get_option( 'mpp-rating-appearance' );
 
 		if ( mpp_is_single_media() && in_array( 'single_media', $appearance ) ) {
 			$this->add_interface( $media->id );
@@ -53,7 +49,7 @@ class MPP_Media_Rating_Actions_Helper {
 
 	}
 
-	public function lb_media_rating_star( $media = null ) {
+	public function add_lightbox_stars( $media = null ) {
 
 		$media = mpp_get_media( $media );
 
@@ -61,7 +57,7 @@ class MPP_Media_Rating_Actions_Helper {
 			return;
 		}
 
-		$appearance = (array) mpp_get_option( 'appearance' );
+		$appearance = (array) mpp_get_option( 'mpp-rating-appearance' );
 
 		if ( in_array( 'light_box', $appearance ) ) {
 			$this->add_interface( $media->id );
@@ -93,19 +89,18 @@ class MPP_Media_Rating_Actions_Helper {
 				$this.rateit('readonly', true);
 
 				var data = {
-					action: 'vote_me',
+					action: 'mpp_rate_media',
 					media_id: media_id,
 					_nonce: _nonce,
-					vote: value
+					rating: value
 				};
 
 				jQuery.post(url, data, function (resp) {
 
 					if (resp.type == 'error') {
-						console.log(resp.message);
+
 					} else if (resp.type == 'success') {
-						console.log(resp.message);
-						jQuery($this).rateit('value', resp.message.average_vote);
+						jQuery($this).rateit('value', resp.message.average_rating);
 					}
 
 				}, 'json');

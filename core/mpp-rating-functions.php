@@ -1,41 +1,22 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Get average rating for the given media
+ * @param $media_id
+ *
+ * @return int|void
  */
-
-
-function mpp_rating_get_users_vote( $post_id ) {
-    
-    if( !$post_id ){
-        
-        return;
-        
-    }
-    
-    global $wpdb;
-    
-    $user_id = get_current_user_id();
-    
-    $votes  = $wpdb->get_col( $wpdb->prepare( "SELECT votes FROM {$wpdb->prefix}mpp_rating WHERE post_id = %d AND user_id = %d", $post_id, $user_id ) );
-
-    return $votes[0];
-    
-}
-
-function mpp_rating_get_average_vote_for_media( $media_id ){
+function mpp_rating_get_average_rating( $media_id ) {
 
     global $wpdb;
 
 	$table_name = mpp_rating_get_table_name();
     
-    if( ! $media_id ){
+    if ( ! $media_id ){
         return;
-    }    
+    }
     
-    $average  = $wpdb->get_var( "SELECT AVG(votes) FROM {$table_name} WHERE media_id = {$media_id}" );
+    $average  = $wpdb->get_var( "SELECT AVG(rating) FROM {$table_name} WHERE media_id = {$media_id}" );
 
 	if ( is_null( $average ) ) {
 		$average = 0;
@@ -45,11 +26,15 @@ function mpp_rating_get_average_vote_for_media( $media_id ){
     
 }
 
-
-function mpp_rating_is_user_can_rate() {
+/**
+ * Does the current user has permission to rate?
+ *
+ * @return mixed|void
+ */
+function mpp_rating_current_user_can_rate() {
     
     $allow          = false;
-    $who_can_rate   = mpp_get_option('who-can-rate');
+    $who_can_rate   = mpp_get_option('mpp-rating-required-permission');
     
     if ( 'any' == $who_can_rate ) {
 	    $allow = true;
@@ -57,10 +42,17 @@ function mpp_rating_is_user_can_rate() {
 	    $allow = true;
     }
     
-    return apply_filters( 'mpp_rating_is_user_can_rate', $allow );
+    return apply_filters( 'mpp_rating_current_user_can_rate', $allow );
     
 }
 
+/**
+ * Is given media ratable
+ * Checks based on component/type
+ * @param $media_id
+ *
+ * @return bool
+ */
 function mpp_rating_is_media_rateable( $media_id ) {
 
 	if ( ! $media_id ) {
@@ -75,8 +67,8 @@ function mpp_rating_is_media_rateable( $media_id ) {
 
 	$can_be_rated = true;
 
-	$component_can_be_rated = (array) mpp_get_option('component-can-be-rated');
-	$type_can_be_rated      = (array) mpp_get_option('type-can-be-rated');
+	$component_can_be_rated = (array) mpp_get_option( 'mpp-rating-ratable-components' );
+	$type_can_be_rated      = (array) mpp_get_option( 'mpp-rating-ratable-types' );
 
 	if ( ! $component_can_be_rated || ! $type_can_be_rated ) {
 		$can_be_rated = false;
@@ -90,7 +82,15 @@ function mpp_rating_is_media_rateable( $media_id ) {
 
 }
 
-function mpp_rating_is_user_rated_on_media( $user_id, $media_id ) {
+/**
+ * has the user already rated the media?
+ *
+ * @param $user_id
+ * @param $media_id
+ *
+ * @return bool
+ */
+function mpp_rating_has_user_rated( $user_id, $media_id ) {
 
 	if ( ! $user_id || ! $media_id ) {
 		return false;
@@ -100,7 +100,7 @@ function mpp_rating_is_user_rated_on_media( $user_id, $media_id ) {
 
 	$table_name = mpp_rating_get_table_name();
 
-	$result = $wpdb->get_row( "SELECT * FROM {$table_name} WHERE user_id = {$user_id} AND media_id = {$media_id}" );
+	$result = $wpdb->get_row( $wpdb->prepare(  "SELECT id FROM {$table_name} WHERE user_id = %d AND media_id = %d", $user_id, $media_id ) );
 
 	if ( is_null( $result ) ) {
 		return false;
@@ -111,10 +111,8 @@ function mpp_rating_is_user_rated_on_media( $user_id, $media_id ) {
 }
 
 function mpp_rating_get_table_name() {
-
 	global $wpdb;
-	return $wpdb->prefix.'mpp_media_rating';
-
+	return $wpdb->prefix . 'mpp_media_rating';
 }
 
 function mpp_rating_is_read_only_media_rating( $media_id ) {
@@ -123,7 +121,7 @@ function mpp_rating_is_read_only_media_rating( $media_id ) {
 		return;
 	}
 
-	if ( ! mpp_rating_is_user_can_rate() || mpp_rating_is_user_rated_on_media( get_current_user_id(), $media_id ) ) {
+	if ( ! mpp_rating_current_user_can_rate() || mpp_rating_has_user_rated( get_current_user_id(), $media_id ) ) {
 		return true;
 	} else {
 		return false;
@@ -131,11 +129,19 @@ function mpp_rating_is_read_only_media_rating( $media_id ) {
 
 }
 
+
+/**
+ * @param array $ids
+ * @param int $interval
+ * @param int $limit
+ *
+ * @return array|bool
+ */
 function mpp_rating_get_top_rated_media( $ids = array(), $interval = 7, $limit = 5 ) {
 
 	global $wpdb;
 
-	if( empty( $ids ) ) {
+	if ( empty( $ids ) ) {
 		return false;
 	}
 
@@ -153,7 +159,7 @@ function mpp_rating_get_top_rated_media( $ids = array(), $interval = 7, $limit =
 
 }
 
-function mpp_rating_get_component_can_be_rated() {
+function mpp_rating_get_rateable_components() {
 
 	$component_can_be_rated = array(
 		'members'        => __( 'Users', 'mpp-media-rating' ),
@@ -167,7 +173,7 @@ function mpp_rating_get_component_can_be_rated() {
 	return apply_filters( 'mpp_rating_component_can_be_rated', $component_can_be_rated );
 }
 
-function mpp_rating_get_who_can_rate() {
+function mpp_rating_get_rating_permissions() {
 
 	$who_can_rate = array(
 		'any'   => __( 'Anyone', 'mpp-media-rating' ),
@@ -179,7 +185,7 @@ function mpp_rating_get_who_can_rate() {
 
 function mpp_rating_get_rating_html( $media_id, $readonly ) {
 
-	$average = mpp_rating_get_average_vote_for_media( $media_id );
+	$average = mpp_rating_get_average_rating( $media_id );
 
 	?>
 	<select id="mpp-rating-value-<?php echo $media_id; ?>" style="display: none">
@@ -203,6 +209,10 @@ function mpp_rating_show_media_of() {
 	);
 }
 
+/**
+ * Gte an associative array of time duration options
+ * @return array
+ */
 function mpp_rating_get_intervals() {
 
 	return array(

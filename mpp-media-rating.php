@@ -1,13 +1,12 @@
 <?php
 
 /* Plugin Name: MediaPress Media Rating
- * Plugin URI: http://buddydev.com/plugins/mp-media-rating
+ * Plugin URI: https://buddydev.com/plugins/mp-media-rating/
  * Version: 1.0.0
- * Description: Used with Mediapress for rating on media
+ * Description: Used with MediaPress for rating on media
  * Author: BuddyDev Team
- * Author URI: http://buddydev.com/
+ * Author URI: https://buddydev.com/
  * License: GPL
- * Last Modified: January 10, 2016
  * Text Domain: mpp-media-rating
  *
  * */
@@ -79,7 +78,7 @@ Class MPP_Media_Rating_Helper {
 	 *
 	 */
 	public function load_assets() {
-
+		//Register/Load jQuery Rateit plugin
 		wp_register_style( 'rateit', $this->url . 'assets/css/rateit.css' );
 		wp_enqueue_style( 'rateit' );
 
@@ -94,7 +93,7 @@ Class MPP_Media_Rating_Helper {
 		$data = array(
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 			'_nonce'            => wp_create_nonce( "mpp-media-rating" ),
-			'is_user_can_vote'  => mpp_rating_is_user_can_rate(),
+			'is_user_can_vote'  => mpp_rating_current_user_can_rate(),
 			'is_user_logged_in' => is_user_logged_in()
 		);
 
@@ -121,7 +120,7 @@ Class MPP_Media_Rating_Helper {
 	                    id bigint(20) NOT NULL AUTO_INCREMENT,
 	                    media_id bigint(20) NOT NULL,
 	                    user_id bigint(20) NOT NULL,
-	                    votes tinyint(4) NOT NULL,
+	                    rating tinyint(4) NOT NULL,
 	                    date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	                    PRIMARY KEY (id)
 	                ) {$charset_collate}";

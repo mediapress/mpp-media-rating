@@ -1,14 +1,10 @@
 <?php
 
 class MPP_Media_Rating_Admin {
-	
-    private static $instance = null; 
-	
-    public function __construct() {
 
+    public function __construct() {
         //setup hooks
 	    add_action( 'mpp_admin_register_settings', array( $this, 'register_settings' ) );
-
     }
 
     /**
@@ -20,41 +16,40 @@ class MPP_Media_Rating_Admin {
 
 		$panel = $page->get_panel( 'addons' );
 
-	    $component_can_be_rated = mpp_rating_get_component_can_be_rated();
+	    $rateable_components = mpp_rating_get_rateable_components();
 
-	    $who_can_rate = mpp_rating_get_who_can_rate();
+	    $who_can_rate = mpp_rating_get_rating_permissions();
 
-	    $type_can_be_rated = array();
+	    $rateable_types = array();
+	    $active_types = mpp_get_active_types();
 
-	    if ( ! empty( mpp_get_active_types() ) ) {
-
-		    foreach ( mpp_get_active_types() as $type => $value ) {
-
-			    $type_can_be_rated[$type]  = __( $value->label, 'mpp-media-rating' );
+	    if ( ! empty( $active_types ) ) {
+		    foreach ( $active_types as $type => $value ) {
+			    $rateable_types[ $type ]  = __( $value->label, 'mpp-media-rating' );
 		    }
 	    }
 
 		$fields = array(
 			array(
-				'name'		=> 'component-can-be-rated',
-				'label'		=> __( 'Select Component', 'mpp-media-rating' ),
+				'name'		=> 'mpp-rating-ratable-components',
+				'label'		=> __( 'Enabled for Components', 'mpp-media-rating' ),
 				'type'		=> 'multicheck',
-				'options'	=> $component_can_be_rated
+				'options'	=> $rateable_components
 			),
 			array(
-				'name'		=> 'type-can-be-rated',
-				'label'		=> __( 'Select Type', 'mpp-media-rating' ),
+				'name'		=> 'mpp-rating-ratable-types',
+				'label'		=> __( 'Enabled for Types', 'mpp-media-rating' ),
 				'type'		=> 'multicheck',
-				'options'	=> $type_can_be_rated
+				'options'	=> $rateable_types
 			),
 			array(
-				'name'		=> 'who-can-rate',
+				'name'		=> 'mpp-rating-required-permission',
 				'label'		=> __( 'Who Can Rate', 'mpp-media-rating' ),
 				'type'		=> 'radio',
 				'options'	=> $who_can_rate
 			),
 			array(
-				'name'		=> 'appearance',
+				'name'		=> 'mpp-rating-appearance',
 				'label'		=> __( 'Appearance', 'mpp-media-rating' ),
 				'type'		=> 'multicheck',
 				'options'	=> array(
@@ -72,3 +67,4 @@ class MPP_Media_Rating_Admin {
 }
 
 new MPP_Media_Rating_Admin();
+
