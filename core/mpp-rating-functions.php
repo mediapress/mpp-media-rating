@@ -149,7 +149,7 @@ function mpp_rating_get_top_rated_media( $ids = array(), $interval = 7, $limit =
 
 	$ids = join( ',', $ids );
 
-	$media_ids = $wpdb->get_results( $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY avg( votes ) DESC LIMIT 0 , %d", $interval, $limit ), 'ARRAY_A' );
+	$media_ids = $wpdb->get_results( $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY avg( rating ) DESC LIMIT 0 , %d", $interval, $limit ), 'ARRAY_A' );
 
 	if ( empty( $media_ids ) ) {
 		return false;

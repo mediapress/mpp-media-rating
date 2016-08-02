@@ -22,10 +22,10 @@ jQuery(function ($) {
         }
 
         var data = {
-            action: 'vote_me',
+            action: 'mpp_rate_media',
             media_id: media_id,
             _nonce: _nonce,
-            vote: value
+            rating: value
         };
 
         $.post(url, data, function (resp) {
@@ -34,7 +34,7 @@ jQuery(function ($) {
                 console.log(resp.message);
             } else if (resp.type == 'success') {
                 console.log(resp.message);
-                $($this).rateit('value', resp.message.average_vote);
+                $($this).rateit('value', resp.message.average_rating);
                 mpp_media_rating_store(media_id);
             }
 

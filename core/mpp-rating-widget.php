@@ -46,7 +46,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		$media_ids = mpp_get_object_ids( $media_args, mpp_get_media_post_type() );
 
 		$rated_media = mpp_rating_get_top_rated_media( $media_ids, $instance['interval'], $instance['max_to_list'] );
-
+		
 		echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title'];
 
 		?>
