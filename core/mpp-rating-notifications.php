@@ -22,6 +22,10 @@ Class MPP_Rating_Notifications {
 
 		$bp = buddypress();
 
+		if ( bp_loggedin_user_id() == $media->user_id ) {
+			return;
+		}
+
 		$notification_id = bp_notifications_add_notification( array(
 			'item_id'           => $media->id,
 			'user_id'           => $media->user_id,
