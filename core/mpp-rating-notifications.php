@@ -82,7 +82,7 @@ Class MPP_Rating_Notifications {
 
 	public function mark_notification_read() {
 
-		if ( ! is_user_logged_in() || ! mpp_is_single_media() ) {
+		if ( ! is_user_logged_in() || ! mpp_is_single_media() || ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
 
@@ -95,6 +95,10 @@ Class MPP_Rating_Notifications {
 	}
 
 	public function clear_all_media_notification( $item_id ) {
+
+		if ( ! function_exists( 'buddypress' ) || ! bp_is_active( 'notifications' ) ) {
+			return;
+		}
 
 		$bp = buddypress();
 
