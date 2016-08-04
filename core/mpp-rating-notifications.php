@@ -16,7 +16,7 @@ Class MPP_Rating_Notifications {
 
 		$media = mpp_get_media( $media_id );
 
-		if ( is_null( $media ) || ! buddypress() || ! bp_is_active( 'notifications' ) ) {
+		if ( is_null( $media ) || ! function_exists( 'buddypress' ) || ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
 
