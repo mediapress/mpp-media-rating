@@ -9,8 +9,14 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-An add-on for MediaPress. Allow users to rate on media from single gallery page, single media page and from light box. Site admin have options like which component media can be rated, what type of media can be rated and who have accessibility to rate on media. Site admin can list top rated media in different context like user's, sitewide or group's media using "Top Rated Media" widget.
+Media rating addon for MediaPress. Allow users to rate photo, audio, videos etc on on WordPress/BuddyPress site.
 
+Features:-
+ - Rating Media
+ - Site admin controls for which type of media can be rated( you can selet Photo, audio, video etc), who can rate it.
+ - Can be enable for Sitewide, Members, groups media .
+ - List top rated Media by type/component.
+ 
 == Installation ==
 
 This section describes how to install the plugin and get it working.
