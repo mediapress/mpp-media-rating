@@ -7,6 +7,8 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+Media Rating for MediaPress.
+
 == Description ==
 
 Media rating addon for MediaPress. Allow users to rate photo, audio, videos etc on on WordPress/BuddyPress site.
