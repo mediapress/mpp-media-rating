@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== MediaPress Media Rating ===
 Contributors: BuddyDev, raviousprime
 Tags: mediapress, buddypress
 Requires at least: 4.0
@@ -12,10 +12,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Media rating addon for MediaPress. Allow users to rate photo, audio, videos etc on on WordPress/BuddyPress site.
 
 Features:-
- - Rating Media
- - Site admin controls for which type of media can be rated( you can selet Photo, audio, video etc), who can rate it.
- - Can be enable for Sitewide, Members, groups media .
- - List top rated Media by type/component.
+
+* Rating Media
+* Site admin controls for which type of media can be rated( you can selet Photo, audio, video etc), who can rate it.
+* Can be enable for Sitewide, Members, groups media .
+* List top rated Media by type/component.
  
 == Installation ==
 
@@ -39,5 +40,3 @@ We request you to use [BuddyDev Forums](https://buddydev.com/support/forums/) fo
 
 = 1.0.0 =
  * Initial Release on wp.org repo.
-
-
