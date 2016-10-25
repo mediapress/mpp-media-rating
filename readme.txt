@@ -38,6 +38,12 @@ We request you to use [BuddyDev Forums](https://buddydev.com/support/forums/) fo
 
 == Screenshots ==
 
+1. Admin options screenshot-1.png
+2. Top rated medid Widget screenshot-2.png
+3. Single gallery screen screenshot-3.png
+4. Single media screen screenshot-4.png
+5. In lightbox screenshot-5.jpg
+
 == Changelog ==
 
 = 1.0.0 =
