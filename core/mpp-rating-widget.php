@@ -134,8 +134,8 @@ class MPP_Rating_Widget extends WP_Widget {
 		$max_to_list         = strip_tags( $instance['max_to_list'] );
 		$user_type           = $instance['user_type'];
 		$interval            = $instance['interval'];
-		$types               = mpp_get_active_types();
-		$statuses            = mpp_get_active_statuses();
+		$active_types        = mpp_get_active_types();
+		$active_statuses     = mpp_get_active_statuses();
 		$rateable_components = mpp_rating_get_rateable_components();
 		$intervals           = mpp_rating_get_intervals();
 		$media_of            = mpp_rating_show_media_of();
@@ -171,11 +171,11 @@ class MPP_Rating_Widget extends WP_Widget {
 		<p>
 			<?php _e( 'Select Type: ', 'mpp-media-rating' ); ?>
 
-			<?php if ( ! empty( $types ) ): ?>
+			<?php if ( ! empty( $active_types ) ): ?>
 
 				<select name="<?php echo $this->get_field_name( 'type' ); ?>">
 
-					<?php foreach ( $types as $key => $label ) : ?>
+					<?php foreach ( $active_types as $key => $label ) : ?>
 
 						<option value="<?php echo $key ?>" <?php selected( $type, $key ) ?>>
 							<?php _e( $label->label, 'mpp-media-rating' ); ?>
@@ -193,11 +193,11 @@ class MPP_Rating_Widget extends WP_Widget {
 		<p>
 			<?php _e( 'Select Status: ', 'mpp-media-rating' ); ?>
 
-			<?php if ( ! empty( $statuses ) ): ?>
+			<?php if ( ! empty( $active_statuses ) ): ?>
 
 				<select name="<?php echo $this->get_field_name( 'status' ); ?>">
 
-					<?php foreach ( $statuses as $key => $label ) : ?>
+					<?php foreach ( $active_statuses as $key => $label ) : ?>
 
 						<option value="<?php echo $key ?>" <?php selected( $status, $key ) ?>>
 							<?php _e( $label->label, 'mpp-media-rating' ); ?>
