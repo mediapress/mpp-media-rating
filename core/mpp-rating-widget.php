@@ -46,7 +46,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		$media_ids = mpp_get_object_ids( $media_args, mpp_get_media_post_type() );
 
 		$rated_media = mpp_rating_get_top_rated_media( $media_ids, $instance['interval'], $instance['max_to_list'] );
-		
+
 		echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title'];
 
 		?>
@@ -63,8 +63,9 @@ class MPP_Rating_Widget extends WP_Widget {
 
 							<div class='mpp-item-entry mpp-media-entry mpp-photo-entry'>
 
-								<a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array( 'class'            => "mpp-item-thumbnail mpp-media-thumbnail mpp-" . $instance['type'] . "-thumbnail",
-								                                                                                       'data-mpp-context' => 'widget'
+								<a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array(
+									'class'            => "mpp-item-thumbnail mpp-media-thumbnail mpp-" . $instance['type'] . "-thumbnail",
+									'data-mpp-context' => 'widget'
 								) ); ?>>
 									<img src="<?php mpp_media_src( 'thumbnail', $id ); ?>"
 									     alt="<?php echo esc_attr( mpp_get_media_title( $id ) ); ?> "/>
@@ -72,8 +73,9 @@ class MPP_Rating_Widget extends WP_Widget {
 
 							</div>
 
-							<a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array( 'class'            => "mpp-item-title mpp-media-title ",
-							                                                                                       'data-mpp-context' => 'widget'
+							<a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array(
+								'class'            => "mpp-item-title mpp-media-title ",
+								'data-mpp-context' => 'widget'
 							) ); ?> ><?php mpp_media_title( $id ); ?></a>
 
 							<div
@@ -124,14 +126,19 @@ class MPP_Rating_Widget extends WP_Widget {
 			'interval'    => 'lweak'
 		);
 
-		$instance    = wp_parse_args( (array) $instance, $defaults );
-		$title       = strip_tags( $instance['title'] );
-		$component   = $instance['component'];
-		$status      = $instance['status'];
-		$type        = $instance['type'];
-		$max_to_list = strip_tags( $instance['max_to_list'] );
-		$user_type   = $instance['user_type'];
-		$interval    = $instance['interval'];
+		$instance            = wp_parse_args( (array) $instance, $defaults );
+		$title               = strip_tags( $instance['title'] );
+		$component           = $instance['component'];
+		$status              = $instance['status'];
+		$type                = $instance['type'];
+		$max_to_list         = strip_tags( $instance['max_to_list'] );
+		$user_type           = $instance['user_type'];
+		$interval            = $instance['interval'];
+		$types               = mpp_get_active_types();
+		$statuses            = mpp_get_active_statuses();
+		$rateable_components = mpp_rating_get_rateable_components();
+		$intervals           = mpp_rating_get_intervals();
+		$media_of            = mpp_rating_show_media_of();
 
 		?>
 
@@ -148,7 +155,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		<p>
 			<?php _e( 'Select Component: ', 'mpp-media-rating' ); ?>
 
-			<?php foreach ( mpp_rating_get_rateable_components() as $key => $label ) : ?>
+			<?php foreach ( $rateable_components as $key => $label ) : ?>
 
 				<label>
 
@@ -164,11 +171,11 @@ class MPP_Rating_Widget extends WP_Widget {
 		<p>
 			<?php _e( 'Select Type: ', 'mpp-media-rating' ); ?>
 
-			<?php if ( ! empty( mpp_get_active_types() ) ): ?>
+			<?php if ( ! empty( $types ) ): ?>
 
 				<select name="<?php echo $this->get_field_name( 'type' ); ?>">
 
-					<?php foreach ( mpp_get_active_types() as $key => $label ) : ?>
+					<?php foreach ( $types as $key => $label ) : ?>
 
 						<option value="<?php echo $key ?>" <?php selected( $type, $key ) ?>>
 							<?php _e( $label->label, 'mpp-media-rating' ); ?>
@@ -186,11 +193,11 @@ class MPP_Rating_Widget extends WP_Widget {
 		<p>
 			<?php _e( 'Select Status: ', 'mpp-media-rating' ); ?>
 
-			<?php if ( ! empty( mpp_get_active_statuses() ) ): ?>
+			<?php if ( ! empty( $statuses ) ): ?>
 
 				<select name="<?php echo $this->get_field_name( 'status' ); ?>">
 
-					<?php foreach ( mpp_get_active_statuses() as $key => $label ) : ?>
+					<?php foreach ( $statuses as $key => $label ) : ?>
 
 						<option value="<?php echo $key ?>" <?php selected( $status, $key ) ?>>
 							<?php _e( $label->label, 'mpp-media-rating' ); ?>
@@ -216,7 +223,7 @@ class MPP_Rating_Widget extends WP_Widget {
 
 			<select name="<?php echo $this->get_field_name( 'interval' ); ?>">
 
-				<?php foreach ( mpp_rating_get_intervals() as $key => $label ) : ?>
+				<?php foreach ( $intervals as $key => $label ) : ?>
 
 					<option value="<?php echo $key ?>" <?php selected( $interval, $key ) ?>>
 						<?php _e( $label, 'mpp-media-rating' ); ?>
@@ -231,7 +238,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		<p>
 			<?php echo __( 'List media of user: ', 'mpp-media-rating' ) ?>
 
-			<?php foreach ( mpp_rating_show_media_of() as $key => $label ): ?>
+			<?php foreach ( $media_of as $key => $label ): ?>
 
 				<label>
 					<input name="<?php echo $this->get_field_name( 'user_type' ); ?>" type="radio"
