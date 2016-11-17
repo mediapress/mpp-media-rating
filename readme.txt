@@ -46,6 +46,8 @@ We request you to use [BuddyDev Forums](https://buddydev.com/support/forums/) fo
 
 == Changelog ==
 
+= 1.0.3 =
+ * Css minor change
 = 1.0.2 =
  * Attaching rating interface on lower priority
 = 1.0.1 =
