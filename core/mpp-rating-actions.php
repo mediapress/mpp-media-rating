@@ -11,9 +11,9 @@ class MPP_Media_Rating_Actions_Helper {
 
 	public function setup() {
 		//add to the media entry in the loop
-		add_action( 'mpp_media_meta', array( $this, 'add_stars' ) );
+		add_action( 'mpp_media_meta', array( $this, 'add_stars' ), 999 );
 		//add to media entry in lightbox
-		add_action( 'mpp_lightbox_media_meta', array( $this, 'add_lightbox_stars' ) );
+		add_action( 'mpp_lightbox_media_meta', array( $this, 'add_lightbox_stars' ), 999 );
 		//add_action( 'mpp_gallery_meta', array( $this, 'gallery_rating_star' ) );
 		//add_action( 'mpp_lightbox_gallery_meta', array( $this, 'gallery_rating_star' ) );
 		add_action( 'mpp_after_lightbox_media', array( $this, 'execute_script' ) );
