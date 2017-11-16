@@ -3,7 +3,7 @@ Contributors: BuddyDev, raviousprime
 Tags: mediapress, buddypress
 Requires at least: 4.0
 Tested up to: 4.6.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,11 @@ We request you to use [BuddyDev Forums](https://buddydev.com/support/forums/) fo
 
 == Changelog ==
 
+= 1.0.4 =
+ * Fatal error fix when BuddyPress not active
+ * Widget components have taken from MediaPress active components
+ * Modify widget render function
+ * Added file and function documentation
 = 1.0.3 =
  * Css minor change
 = 1.0.2 =
