@@ -5,19 +5,19 @@
  * @package mpp-media-rating
  */
 
-/* Plugin Name: MediaPress Media Rating
- * Plugin URI: https://buddydev.com/plugins/mp-media-rating/
+/**
+ * Plugin Name: MediaPress Media Rating
+ * Plugin URI: https://buddydev.com/plugins/mpp-media-rating/
  * Version: 1.0.3
- * Description: Used with MediaPress for rating on media
- * Author: BuddyDev Team
+ * Description: Used with MediaPress for rating on media.
+ * Author: BuddyDev
  * Author URI: https://buddydev.com/
  * License: GPL
  * Text Domain: mpp-media-rating
  * Updated On: Nov 17, 2016
- *
- * */
+ **/
 
-// Exit if the file is accessed directly over web
+// Exit if the file is accessed directly over web.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class MPP_Media_Rating_Helper
  */
-Class MPP_Media_Rating_Helper {
+class MPP_Media_Rating_Helper {
 
 	/**
 	 * Class instance
@@ -95,9 +95,12 @@ Class MPP_Media_Rating_Helper {
 			'core/mpp-rating-functions.php',
 			'core/mpp-rating-actions.php',
 			'core/mpp-rating-ajax-handler.php',
-			'core/mpp-rating-notifications.php',
-			'core/mpp-rating-widget.php'
+			'core/mpp-rating-widget.php',
 		);
+
+		if ( function_exists( 'buddypress' ) ) {
+			$files[] = 'core/mpp-rating-notifications.php';
+		}
 
 		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 			$files[] = 'admin/admin.php';
@@ -112,7 +115,8 @@ Class MPP_Media_Rating_Helper {
 	 * Load plugin assets
 	 */
 	public function load_assets() {
-		//Register/Load jQuery Rateit plugin
+
+		// Register/Load jQuery Rateit plugin.
 		wp_register_style( 'rateit', $this->url . 'assets/css/rateit.css' );
 		wp_enqueue_style( 'rateit' );
 
@@ -121,14 +125,14 @@ Class MPP_Media_Rating_Helper {
 		wp_register_script( 'jquery-cookie', $this->url . 'assets/js/jquery.cookie.js', array( 'jquery' ) );
 		wp_register_script( 'mpp-media-rating-script', $this->url . 'assets/js/mpp-media-rating.js', array(
 			'jquery-star-rating',
-			'jquery-cookie'
+			'jquery-cookie',
 		) );
 
 		$data = array(
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
-			'_nonce'            => wp_create_nonce( "mpp-media-rating" ),
+			'_nonce'            => wp_create_nonce( 'mpp-media-rating' ),
 			'is_user_can_vote'  => mpp_rating_current_user_can_rate(),
-			'is_user_logged_in' => is_user_logged_in()
+			'is_user_logged_in' => is_user_logged_in(),
 		);
 
 		wp_localize_script( 'mpp-media-rating-script', 'MPP_RATING', $data );

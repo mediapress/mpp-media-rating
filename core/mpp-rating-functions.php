@@ -5,9 +5,9 @@
  * @package mpp-media-rating
  */
 
-// Exit if file access directly over web
+// Exit if file access directly over web.
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -27,7 +27,8 @@ function mpp_rating_get_average_rating( $media_id ) {
 		return;
 	}
 
-	$average = $wpdb->get_var( "SELECT AVG(rating) FROM {$table_name} WHERE media_id = {$media_id}" );
+	$query   = $wpdb->prepare( "SELECT AVG(rating) FROM {$table_name} WHERE media_id = %d", $media_id );
+	$average = $wpdb->get_var( $query );
 
 	if ( is_null( $average ) ) {
 		$average = 0;
@@ -42,17 +43,17 @@ function mpp_rating_get_average_rating( $media_id ) {
  * @return bool
  */
 function mpp_rating_current_user_can_rate() {
-    
-    $allow          = false;
-    $who_can_rate   = mpp_get_option('mpp-rating-required-permission');
-    
-    if ( 'any' == $who_can_rate ) {
-	    $allow = true;
-    } elseif ( 'loggedin' == $who_can_rate && is_user_logged_in() ) {
-	    $allow = true;
-    }
-    
-    return apply_filters( 'mpp_rating_current_user_can_rate', $allow );
+
+	$allow  = false;
+	$who_can_rate   = mpp_get_option( 'mpp-rating-required-permission' );
+
+	if ( 'any' == $who_can_rate ) {
+		$allow = true;
+	} elseif ( 'loggedin' == $who_can_rate && is_user_logged_in() ) {
+		$allow = true;
+	}
+
+	return apply_filters( 'mpp_rating_current_user_can_rate', $allow );
 }
 
 /**
@@ -102,13 +103,15 @@ function mpp_rating_has_user_rated( $user_id, $media_id ) {
 
 	global $wpdb;
 
-    if ( ! $user_id || ! $media_id ) {
+	if ( ! $user_id || ! $media_id ) {
 		return false;
 	}
 
 	$table_name = mpp_rating_get_table_name();
 
-	$result = $wpdb->get_row( $wpdb->prepare(  "SELECT id FROM {$table_name} WHERE user_id = %d AND media_id = %d", $user_id, $media_id ) );
+	$query = $wpdb->prepare( "SELECT id FROM {$table_name} WHERE user_id = %d AND media_id = %d", $user_id, $media_id );
+
+	$result = $wpdb->get_row( $query );
 
 	if ( is_null( $result ) ) {
 		return false;
@@ -130,7 +133,7 @@ function mpp_rating_get_table_name() {
 /**
  * Check if media is read only rating i.e. user already rated on this media
  *
- * @param $media_id
+ * @param int $media_id Media id.
  *
  * @return bool|null
  */
@@ -168,7 +171,8 @@ function mpp_rating_get_top_rated_media( $ids = array(), $interval = 7, $limit =
 
 	$ids = join( ',', $ids );
 
-	$media_ids = $wpdb->get_results( $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY avg( rating ) DESC LIMIT 0 , %d", $interval, $limit ), 'ARRAY_A' );
+	$query     = $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY avg( rating ) DESC LIMIT 0 , %d", $interval, $limit );
+	$media_ids = $wpdb->get_results( $query, 'ARRAY_A' );
 
 	if ( empty( $media_ids ) ) {
 		return false;
@@ -203,11 +207,11 @@ function mpp_rating_get_rateable_components() {
 function mpp_rating_get_rating_permissions() {
 
 	$who_can_rate = array(
-		'any'   => __( 'Anyone', 'mpp-media-rating' ),
-		'loggedin' => __( 'Logged In', 'mpp-media-rating' )
+		'any'      => __( 'Anyone', 'mpp-media-rating' ),
+		'loggedin' => __( 'Logged In', 'mpp-media-rating' ),
 	);
 
-	return apply_filters( 'mpp_rating_who_can_rate', $who_can_rate  );
+	return apply_filters( 'mpp_rating_who_can_rate', $who_can_rate );
 }
 
 /**
@@ -228,7 +232,7 @@ function mpp_rating_get_rating_html( $media_id, $readonly ) {
 		<option value="4" <?php selected( 4, $average )?>>4</option>
 		<option value="5" <?php selected( 5, $average )?>>5</option>
 	</select>
-	<div class="mpp-media-rating" data-rateit-readonly="<?php echo $readonly; ?>" data-media-id="<?php echo $media_id; ?>" data-rateit-backingfld="#mpp-rating-value-<?php echo $media_id; ?>"></div>
+	<div class="mpp-media-rating" data-rateit-readonly="<?php echo esc_attr( $readonly ); ?>" data-media-id="<?php echo $media_id; ?>" data-rateit-backingfld="#mpp-rating-value-<?php echo $media_id; ?>"></div>
 
 	<?php
 }
@@ -239,11 +243,17 @@ function mpp_rating_get_rating_html( $media_id, $readonly ) {
  * @return array
  */
 function mpp_rating_show_media_of() {
-	return array(
-		'loggedin'  => __( 'Logged In User', 'mpp-media-rating'),
-		'displayed' => __( 'Displayed User', 'mpp-media-rating'),
-		'any'       => __( 'Any', 'mpp-media-rating'),
+
+	$options = array(
+		'loggedin' => __( 'Logged In User', 'mpp-media-rating' ),
+		'any'      => __( 'Any', 'mpp-media-rating' ),
 	);
+
+	if ( function_exists( 'buddypress' ) ) {
+		$options['displayed'] = __( 'Displayed User', 'mpp-media-rating' );
+	}
+
+	return $options;
 }
 
 /**
@@ -252,9 +262,12 @@ function mpp_rating_show_media_of() {
  * @return array
  */
 function mpp_rating_get_intervals() {
-	return array(
-		7   => __( 'Last weak', 'mpp-media-rating'),
-		30  => __( 'Last month', 'mpp-media-rating'),
-		365 => __( 'Last Year', 'mpp-media-rating'),
+
+	$intervals = array(
+		7   => __( 'Last weak', 'mpp-media-rating' ),
+		30  => __( 'Last month', 'mpp-media-rating' ),
+		365 => __( 'Last Year', 'mpp-media-rating' ),
 	);
+
+	return apply_filters( 'mpp_rating_intervals', $intervals );
 }

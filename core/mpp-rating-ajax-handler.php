@@ -29,13 +29,9 @@ class MPP_Media_Rating_Ajax_Handler {
 	public function rate() {
 
 		$media_id = absint( $_POST['media_id'] );
-		$_nonce   = $_POST['_nonce'];
 		$vote     = absint( $_POST['rating'] );
 
-		if ( ! wp_verify_nonce( $_nonce, 'mpp-media-rating' ) ) {
-			wp_send_json( array( 'type' => 'error', 'message' => __( 'Action unauthorized', 'mpp-media-rating' ) ) );
-			exit;
-		}
+		check_ajax_referer( 'mpp-media-rating', '_nonce' );
 
 		if ( ! mpp_rating_current_user_can_rate() || ! mpp_rating_is_media_rateable( $media_id ) ) {
 			wp_send_json( array( 'type' => 'error', 'message' => __( 'Invalid action', 'mpp-media-rating' ) ) );
@@ -49,9 +45,9 @@ class MPP_Media_Rating_Ajax_Handler {
 	/**
 	 * Save user rating
 	 *
-	 * @param int $user_id User id
-	 * @param int $media_id Media Id
-	 * @param int $rating Rating number
+	 * @param int $user_id User id.
+	 * @param int $media_id Media Id.
+	 * @param int $rating Rating number.
 	 */
 	private function save_rating( $user_id, $media_id, $rating ) {
 
