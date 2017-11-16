@@ -34,8 +34,9 @@ class MPP_Media_Rating_Ajax_Handler {
 		check_ajax_referer( 'mpp-media-rating', '_nonce' );
 
 		if ( ! mpp_rating_current_user_can_rate() || ! mpp_rating_is_media_rateable( $media_id ) ) {
-			wp_send_json( array( 'type' => 'error', 'message' => __( 'Invalid action', 'mpp-media-rating' ) ) );
-			exit;
+			wp_send_json_error( array(
+				'message' => __( 'Invalid request', 'mpp-media-rating' ),
+			) );
 		}
 
 		$this->save_rating( get_current_user_id(), $media_id, $vote );
