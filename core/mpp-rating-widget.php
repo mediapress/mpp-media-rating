@@ -1,4 +1,14 @@
 <?php
+/**
+ * Plugin widget class to list top rated media.
+ *
+ * @package mpp-media-rating
+ */
+
+// Exit if file access directly over web
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  *  MPP rating widget for displaying
@@ -6,8 +16,15 @@
  *  Top n photos of a user
  *  Top n media last weak, month, year
  */
+
+/**
+ * Class MPP_Rating_Widget
+ */
 class MPP_Rating_Widget extends WP_Widget {
 
+	/**
+	 * MPP_Rating_Widget constructor.
+	 */
 	public function __construct() {
 
 		$widget_ops = array(
@@ -15,13 +32,15 @@ class MPP_Rating_Widget extends WP_Widget {
 		);
 
 		parent::__construct( false, _x( 'Top Rated Media( MediaPress )', 'widget name', 'mpp-media-rating' ), $widget_ops );
-
 	}
 
+	/**
+	 * Render widget on frontend using saved settings.
+	 *
+	 * @param array $args Array of values.
+	 * @param array $instance Current value of widget settings
+	 */
 	public function widget( $args, $instance ) {
-
-
-		extract( $args );
 
 		if ( $instance['user_type'] == 'loggedin' && ! is_user_logged_in() ) {
 			return;
@@ -47,58 +66,68 @@ class MPP_Rating_Widget extends WP_Widget {
 
 		$rated_media = mpp_rating_get_top_rated_media( $media_ids, $instance['interval'], $instance['max_to_list'] );
 
+		echo $args['before_widget'];
+
 		echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title'];
 
 		?>
-		<div class="mpp-container mpp-widget-container mpp-media-widget-container mpp-media-video-widget-container">
+        <div class="mpp-container mpp-widget-container mpp-media-widget-container mpp-media-video-widget-container">
 
 			<?php if ( $rated_media ): ?>
 
 				<?php foreach ( $rated_media as $id ): ?>
 
-					<div class='mpp-g mpp-item-list mpp-media-list mpp-<?php echo $instance["type"] ?>-list'>
+                    <div class='mpp-g mpp-item-list mpp-media-list mpp-<?php echo $instance["type"] ?>-list'>
 
-						<div
-							class="<?php mpp_media_class( 'mpp-widget-item mpp-widget-' . $instance["type"] . '-item ' . mpp_get_grid_column_class( 1 ) ); ?>">
+                        <div
+                                class="<?php mpp_media_class( 'mpp-widget-item mpp-widget-' . $instance["type"] . '-item ' . mpp_get_grid_column_class( 1 ) ); ?>">
 
-							<div class='mpp-item-entry mpp-media-entry mpp-photo-entry'>
+                            <div class='mpp-item-entry mpp-media-entry mpp-photo-entry'>
 
-								<a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array(
+                                <a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array(
 									'class'            => "mpp-item-thumbnail mpp-media-thumbnail mpp-" . $instance['type'] . "-thumbnail",
 									'data-mpp-context' => 'widget'
 								) ); ?>>
-									<img src="<?php mpp_media_src( 'thumbnail', $id ); ?>"
-									     alt="<?php echo esc_attr( mpp_get_media_title( $id ) ); ?> "/>
-								</a>
+                                    <img src="<?php mpp_media_src( 'thumbnail', $id ); ?>"
+                                         alt="<?php echo esc_attr( mpp_get_media_title( $id ) ); ?> "/>
+                                </a>
 
-							</div>
+                            </div>
 
-							<a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array(
+                            <a href="<?php mpp_media_permalink( $id ); ?>" <?php mpp_media_html_attributes( array(
 								'class'            => "mpp-item-title mpp-media-title ",
 								'data-mpp-context' => 'widget'
 							) ); ?> ><?php mpp_media_title( $id ); ?></a>
 
-							<div
-								class="mpp-item-meta mpp-media-meta mpp-media-widget-item-meta mpp-media-meta-bottom mpp-media-widget-item-meta-bottom">
+                            <div
+                                    class="mpp-item-meta mpp-media-meta mpp-media-widget-item-meta mpp-media-meta-bottom mpp-media-widget-item-meta-bottom">
 								<?php echo mpp_rating_get_rating_html( $id, 1 ); ?>
-							</div>
+                            </div>
 
-						</div>
-					</div>
+                        </div>
+                    </div>
 
 				<?php endforeach; ?>
 
 			<?php else: ?>
 				<?php _e( 'Nothing to show', 'mpp-media-rating' ); ?>
-
-
 			<?php endif; ?>
 
-		</div>
+        </div>
+
 		<?php
 
+		echo $args['after_widget'];
 	}
 
+	/**
+	 * Update widget settings
+	 *
+	 * @param array $new_instance New instance of settings.
+	 * @param array $old_instance Old instance of settings.
+	 *
+	 * @return array
+	 */
 	public function update( $new_instance, $old_instance ) {
 
 		$instance                = $old_instance;
@@ -111,9 +140,15 @@ class MPP_Rating_Widget extends WP_Widget {
 		$instance['interval']    = $new_instance['interval'];
 
 		return $instance;
-
 	}
 
+	/**
+	 * Render widget settings form
+	 *
+	 * @param array $instance
+	 *
+	 * @return string
+	 */
 	public function form( $instance ) {
 
 		$defaults = array(
@@ -142,114 +177,84 @@ class MPP_Rating_Widget extends WP_Widget {
 
 		?>
 
-		<p>
-			<label>
+        <p>
+            <label>
 				<?php _e( 'Title:', 'mpp-media-rating' ); ?>
-				<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
-				       name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
-				       value="<?php echo esc_attr( $title ); ?>"/>
-			</label>
-		</p>
-
-
-		<p>
+                <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>"
+                       name="<?php echo $this->get_field_name( 'title' ); ?>" type="text"
+                       value="<?php echo esc_attr( $title ); ?>"/>
+            </label>
+        </p>
+        <p>
 			<?php _e( 'Select Component: ', 'mpp-media-rating' ); ?>
-
 			<?php foreach ( $rateable_components as $key => $label ) : ?>
-
-				<label>
-
-					<input class="widefat" name="<?php echo $this->get_field_name( 'component' ); ?>" type="radio"
-					       value="<?php echo $key; ?>" <?php checked( $component, $key ); ?>/>
-					<?php echo $label; ?>
-
-				</label>
-
+            <label>
+                <input class="widefat" name="<?php echo $this->get_field_name( 'component' ); ?>" type="radio"
+                       value="<?php echo $key; ?>" <?php checked( $component, $key ); ?>/>
+				<?php echo $label; ?>
+            </label>
 			<?php endforeach; ?>
-		</p>
+        </p>
 
-		<p>
+        <p>
 			<?php _e( 'Select Type: ', 'mpp-media-rating' ); ?>
-
-			<?php if ( ! empty( $active_types ) ): ?>
-
-				<select name="<?php echo $this->get_field_name( 'type' ); ?>">
-
-					<?php foreach ( $active_types as $key => $label ) : ?>
-
-						<option value="<?php echo $key ?>" <?php selected( $type, $key ) ?>>
-							<?php _e( $label->label, 'mpp-media-rating' ); ?>
-						</option>
-
-					<?php endforeach; ?>
-
-				</select>
-
+			<?php if ( ! empty( $active_types ) ) : ?>
+                <select name="<?php echo $this->get_field_name( 'type' ); ?>">
+                <?php foreach ( $active_types as $key => $label ) : ?>
+                    <option value="<?php echo $key ?>" <?php selected( $type, $key ) ?>>
+					    <?php _e( $label->label, 'mpp-media-rating' ); ?>
+                    </option>
+                <?php endforeach; ?>
+                </select>
 			<?php else: ?>
 				<?php _e( 'No Active Media Type!', 'mpp-media-rating' ); ?>
 			<?php endif; ?>
-		</p>
+        </p>
 
-		<p>
+        <p>
 			<?php _e( 'Select Status: ', 'mpp-media-rating' ); ?>
-
 			<?php if ( ! empty( $active_statuses ) ): ?>
-
-				<select name="<?php echo $this->get_field_name( 'status' ); ?>">
-
-					<?php foreach ( $active_statuses as $key => $label ) : ?>
-
-						<option value="<?php echo $key ?>" <?php selected( $status, $key ) ?>>
-							<?php _e( $label->label, 'mpp-media-rating' ); ?>
-						</option>
-
-					<?php endforeach; ?>
-
-				</select>
-
+                <select name="<?php echo $this->get_field_name( 'status' ); ?>">
+				<?php foreach ( $active_statuses as $key => $label ) : ?>
+                    <option value="<?php echo $key ?>" <?php selected( $status, $key ) ?>>
+					    <?php _e( $label->label, 'mpp-media-rating' ); ?>
+                    </option>
+                <?php endforeach; ?>
+                </select>
 			<?php endif; ?>
-		</p>
+        </p>
 
-		<p>
-			<label>
+        <p>
+            <label>
 				<?php echo __( 'Max media to show', 'mpp-media-rating' ) ?>
-				<input type="number" name="<?php echo $this->get_field_name( 'max_to_list' ); ?>"
-				       value="<?php echo $max_to_list; ?>"/>
-			</label>
-		</p>
+                <input type="number" name="<?php echo $this->get_field_name( 'max_to_list' ); ?>"
+                       value="<?php echo $max_to_list; ?>"/>
+            </label>
+        </p>
 
-		<p>
+        <p>
 			<?php echo __( 'Interval: ', 'mpp-media-rating' ) ?>
+            <select name="<?php echo $this->get_field_name( 'interval' ); ?>">
+			<?php foreach ( $intervals as $key => $label ) : ?>
+                <option value="<?php echo $key ?>" <?php selected( $interval, $key ) ?>>
+				    <?php _e( $label, 'mpp-media-rating' ); ?>
+                </option>
+            <?php endforeach; ?>
+            </select>
+        </p>
 
-			<select name="<?php echo $this->get_field_name( 'interval' ); ?>">
-
-				<?php foreach ( $intervals as $key => $label ) : ?>
-
-					<option value="<?php echo $key ?>" <?php selected( $interval, $key ) ?>>
-						<?php _e( $label, 'mpp-media-rating' ); ?>
-					</option>
-
-				<?php endforeach; ?>
-
-			</select>
-		</p>
-
-		<span><?php _e( "Section for user component", "mpp-media-rating" ); ?></span>
-		<p>
+        <span><?php _e( "Section for user component", "mpp-media-rating" ); ?></span>
+        <p>
 			<?php echo __( 'List media of user: ', 'mpp-media-rating' ) ?>
-
 			<?php foreach ( $media_of as $key => $label ): ?>
-
-				<label>
-					<input name="<?php echo $this->get_field_name( 'user_type' ); ?>" type="radio"
-					       value="<?php echo $key; ?>" <?php checked( $key, $user_type ); ?>/>
-					<?php echo $label; ?>
-				</label>
-
+            <label>
+                <input name="<?php echo $this->get_field_name( 'user_type' ); ?>" type="radio"
+                       value="<?php echo $key; ?>" <?php checked( $key, $user_type ); ?>/>
+				<?php echo $label; ?>
+            </label>
 			<?php endforeach; ?>
-		</p>
+        </p>
 
 		<?php
-
 	}
 }
