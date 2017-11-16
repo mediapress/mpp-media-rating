@@ -19,21 +19,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function mpp_rating_get_average_rating( $media_id ) {
 
-    global $wpdb;
+	global $wpdb;
 
 	$table_name = mpp_rating_get_table_name();
-    
-    if ( ! $media_id ){
-        return;
-    }
-    
-    $average  = $wpdb->get_var( "SELECT AVG(rating) FROM {$table_name} WHERE media_id = {$media_id}" );
+
+	if ( ! $media_id ) {
+		return;
+	}
+
+	$average = $wpdb->get_var( "SELECT AVG(rating) FROM {$table_name} WHERE media_id = {$media_id}" );
 
 	if ( is_null( $average ) ) {
 		$average = 0;
 	}
-    
-    return absint( $average );
+
+	return absint( $average );
 }
 
 /**
@@ -184,16 +184,15 @@ function mpp_rating_get_top_rated_media( $ids = array(), $interval = 7, $limit =
  */
 function mpp_rating_get_rateable_components() {
 
-	$component_can_be_rated = array(
-		'members'        => __( 'Users', 'mpp-media-rating' ),
-		'sitewide'    => __( 'SiteWide', 'mpp-media-rating' )
-	);
+	$active_components = mpp_get_active_components();
 
-	if ( bp_is_active( 'groups' ) ) {
-		$component_can_be_rated['groups'] = __( 'Groups', 'mpp-media-rating' );
+	$rateable_components = array();
+
+	foreach ( $active_components as $key => $component ) {
+		$rateable_components[ $key ] = $component->label;
 	}
 
-	return apply_filters( 'mpp_rating_component_can_be_rated', $component_can_be_rated );
+	return apply_filters( 'mpp_rating_component_can_be_rated', $rateable_components );
 }
 
 /**
