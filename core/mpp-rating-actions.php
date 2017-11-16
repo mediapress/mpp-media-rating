@@ -1,36 +1,64 @@
 <?php
+/**
+ * Actions helper class
+ *
+ * @package mpp-media-rating
+ */
 
-
+/**
+ * Class MPP_Media_Rating_Actions_Helper
+ */
 class MPP_Media_Rating_Actions_Helper {
 
+	/**
+	 * Class instance
+	 *
+	 * @var MPP_Media_Rating_Actions_Helper
+	 */
 	private static $instance = null;
 
+	/**
+	 * MPP_Media_Rating_Actions_Helper constructor.
+	 */
 	private function __construct() {
 		$this->setup();
 	}
 
+	/**
+	 * Action callbacks
+	 */
 	public function setup() {
+
 		//add to the media entry in the loop
 		add_action( 'mpp_media_meta', array( $this, 'add_stars' ), 999 );
+
 		//add to media entry in lightbox
 		add_action( 'mpp_lightbox_media_meta', array( $this, 'add_lightbox_stars' ), 999 );
+
 		//add_action( 'mpp_gallery_meta', array( $this, 'gallery_rating_star' ) );
 		//add_action( 'mpp_lightbox_gallery_meta', array( $this, 'gallery_rating_star' ) );
 		add_action( 'mpp_after_lightbox_media', array( $this, 'execute_script' ) );
-
-
 	}
 
+	/**
+	 * Get class instance
+	 *
+	 * @return MPP_Media_Rating_Actions_Helper
+	 */
 	public static function get_instance() {
 
 		if ( is_null( self::$instance ) ) {
-			self::$instance = new self ();
+			self::$instance = new self();
 		}
 
 		return self::$instance;
-
 	}
 
+	/**
+	 * Add stars interface
+	 *
+	 * @param null|MPP_Media $media Media object.
+	 */
 	public function add_stars( $media = null ) {
 
 		$media = mpp_get_media( $media );
@@ -46,9 +74,13 @@ class MPP_Media_Rating_Actions_Helper {
 		} elseif ( mpp_is_single_gallery() && in_array( 'single_gallery', $appearance ) ) {
 			$this->add_interface( $media->id );
 		}
-
 	}
 
+	/**
+	 * Add interface in the lightbox view
+	 *
+	 * @param null|MPP_Media $media Media object.
+	 */
 	public function add_lightbox_stars( $media = null ) {
 
 		$media = mpp_get_media( $media );
@@ -62,9 +94,13 @@ class MPP_Media_Rating_Actions_Helper {
 		if ( in_array( 'light_box', $appearance ) ) {
 			$this->add_interface( $media->id );
 		}
-
 	}
 
+	/**
+	 * Render rating html using media id
+	 *
+	 * @param $media_id
+	 */
 	public function add_interface( $media_id ) {
 
 		if ( ! mpp_rating_is_media_rateable( $media_id ) ) {
@@ -74,45 +110,48 @@ class MPP_Media_Rating_Actions_Helper {
 		echo mpp_rating_get_rating_html( $media_id, mpp_rating_is_read_only_media_rating( $media_id ) );
 	}
 
+	/**
+	 * Execute script
+	 *
+	 * @param null|MPP_Media $media Media object
+	 */
 	public function execute_script( $media = null ) {
 
 		?>
-		<script type="text/javascript">
+        <script type="text/javascript">
 
-			jQuery(".mpp-media-rating").rateit({resetable: false});
+            jQuery(".mpp-media-rating").rateit({resetable: false});
 
-			jQuery('.mpp-media-rating').bind('rated', function (event, value) {
+            jQuery('.mpp-media-rating').bind('rated', function (event, value) {
 
-				var $this = jQuery(this),
-					media_id = $this.attr('data-media-id');
+                var $this = jQuery(this),
+                    media_id = $this.attr('data-media-id');
 
-				$this.rateit('readonly', true);
+                $this.rateit('readonly', true);
 
-				var data = {
-					action: 'mpp_rate_media',
-					media_id: media_id,
-					_nonce: _nonce,
-					rating: value
-				};
+                var data = {
+                    action: 'mpp_rate_media',
+                    media_id: media_id,
+                    _nonce: _nonce,
+                    rating: value
+                };
 
-				jQuery.post(url, data, function (resp) {
+                jQuery.post(url, data, function (resp) {
 
-					if (resp.type == 'error') {
+                    if (resp.type == 'error') {
 
-					} else if (resp.type == 'success') {
-						jQuery($this).rateit('value', resp.message.average_rating);
-					}
+                    } else if (resp.type == 'success') {
+                        jQuery($this).rateit('value', resp.message.average_rating);
+                    }
 
-				}, 'json');
+                }, 'json');
 
-			});
+            });
 
-		</script>
+        </script>
 
 		<?php
 	}
-
 }
 
 MPP_Media_Rating_Actions_Helper::get_instance();
-

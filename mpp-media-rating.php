@@ -1,4 +1,9 @@
 <?php
+/**
+ * Main plugin file
+ *
+ * @package mpp-media-rating
+ */
 
 /* Plugin Name: MediaPress Media Rating
  * Plugin URI: https://buddydev.com/plugins/mp-media-rating/
@@ -11,28 +16,54 @@
  * Updated On: Nov 17, 2016
  *
  * */
-/**
- *
- */
+
 // Exit if the file is accessed directly over web
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Class MPP_Media_Rating_Helper
+ */
 Class MPP_Media_Rating_Helper {
 
-	private static $instance;
-	private $url;
-	private $path;
+	/**
+	 * Class instance
+	 *
+	 * @var MPP_Media_Rating_Helper
+	 */
+	private static $instance = null;
 
+	/**
+	 * Absolute plugin directory url that can be accessed over web to load plugin assets
+	 *
+	 * @var string
+	 */
+	private $url = '';
+
+	/**
+	 * Absolute plugin directory path
+	 *
+	 * @var string
+	 */
+	private $path = '';
+
+	/**
+	 * MPP_Media_Rating_Helper constructor.
+	 */
 	private function __construct() {
 
 		$this->url  = plugin_dir_url( __FILE__ );
 		$this->path = plugin_dir_path( __FILE__ );
-		$this->setup();
 
+		$this->setup();
 	}
 
+	/**
+	 * Get class instance
+	 *
+	 * @return MPP_Media_Rating_Helper
+	 */
 	public static function get_instance() {
 
 		if ( ! isset( self::$instance ) ) {
@@ -40,17 +71,19 @@ Class MPP_Media_Rating_Helper {
 		}
 
 		return self::$instance;
-
 	}
 
+	/**
+	 * Setup application callbacks for necessary hooks
+	 */
 	public function setup() {
 
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
+
 		add_action( 'mpp_init', array( $this, 'load_text_domain' ) );
 		add_action( 'mpp_loaded', array( $this, 'load' ) );
 		add_action( 'mpp_enqueue_scripts', array( $this, 'load_assets' ) );
 		add_action( 'mpp_widgets_init', array( $this, 'register_widget' ) );
-
 	}
 
 	/**
@@ -66,19 +99,17 @@ Class MPP_Media_Rating_Helper {
 			'core/mpp-rating-widget.php'
 		);
 
-		if ( is_admin() ) {
+		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 			$files[] = 'admin/admin.php';
 		}
 
 		foreach ( $files as $file ) {
 			require_once $this->path . $file;
 		}
-
 	}
 
 	/**
-	 * Load Js and css
-	 *
+	 * Load plugin assets
 	 */
 	public function load_assets() {
 		//Register/Load jQuery Rateit plugin
@@ -102,7 +133,6 @@ Class MPP_Media_Rating_Helper {
 
 		wp_localize_script( 'mpp-media-rating-script', 'MPP_RATING', $data );
 		wp_enqueue_script( 'mpp-media-rating-script' );
-
 	}
 
 	/**
@@ -112,6 +142,9 @@ Class MPP_Media_Rating_Helper {
 		load_plugin_textdomain( 'mpp-media-rating', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
+	/**
+	 * On activate creates database table
+	 */
 	public function install() {
 
 		global $wpdb;
@@ -129,17 +162,29 @@ Class MPP_Media_Rating_Helper {
 	                ) {$charset_collate}";
 
 		dbDelta( $sql );
-
 	}
 
+	/**
+	 * Register plugin widget
+	 */
 	public function register_widget() {
 		register_widget( 'MPP_Rating_Widget' );
 	}
 
+	/**
+	 * Get path of plugin directory
+	 *
+	 * @return string
+	 */
 	public function get_path() {
 		return $this->path;
 	}
 
+	/**
+	 * Get url of plugin directory
+	 *
+	 * @return string
+	 */
 	public function get_url() {
 		return $this->url;
 	}
@@ -147,6 +192,8 @@ Class MPP_Media_Rating_Helper {
 }
 
 /**
+ * Get class instance
+ *
  * @return MPP_Media_Rating_Helper
  */
 function mpp_media_rating() {
