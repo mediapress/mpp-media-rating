@@ -1,10 +1,21 @@
 <?php
+/**
+ * File contains core plugin functions
+ *
+ * @package mpp-media-rating
+ */
+
+// Exit if file access directly over web
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Get average rating for the given media
- * @param $media_id
  *
- * @return int|void
+ * @param int $media_id Media id.
+ *
+ * @return int|null
  */
 function mpp_rating_get_average_rating( $media_id ) {
 
@@ -23,13 +34,12 @@ function mpp_rating_get_average_rating( $media_id ) {
 	}
     
     return absint( $average );
-    
 }
 
 /**
- * Does the current user has permission to rate?
+ * Check if current user can rate
  *
- * @return mixed|void
+ * @return bool
  */
 function mpp_rating_current_user_can_rate() {
     
@@ -43,13 +53,12 @@ function mpp_rating_current_user_can_rate() {
     }
     
     return apply_filters( 'mpp_rating_current_user_can_rate', $allow );
-    
 }
 
 /**
- * Is given media rateable
- * Checks based on component/type
- * @param $media_id
+ * Is given media type rateable or not based on media component/type
+ *
+ * @param int $media_id Media id.
  *
  * @return bool
  */
@@ -79,24 +88,23 @@ function mpp_rating_is_media_rateable( $media_id ) {
 	}
 
 	return apply_filters( 'mpp_rating_is_media_rateable', $can_be_rated );
-
 }
 
 /**
- * has the user already rated the media?
+ * Check if user has rated on media or not.
  *
- * @param $user_id
- * @param $media_id
+ * @param int $user_id  User Id.
+ * @param int $media_id Media Id.
  *
  * @return bool
  */
 function mpp_rating_has_user_rated( $user_id, $media_id ) {
 
-	if ( ! $user_id || ! $media_id ) {
+	global $wpdb;
+
+    if ( ! $user_id || ! $media_id ) {
 		return false;
 	}
-
-	global $wpdb;
 
 	$table_name = mpp_rating_get_table_name();
 
@@ -104,17 +112,28 @@ function mpp_rating_has_user_rated( $user_id, $media_id ) {
 
 	if ( is_null( $result ) ) {
 		return false;
-	} else {
-		return true;
 	}
 
+	return true;
 }
 
+/**
+ * Get media rating table
+ *
+ * @return string
+ */
 function mpp_rating_get_table_name() {
 	global $wpdb;
 	return $wpdb->prefix . 'mpp_media_rating';
 }
 
+/**
+ * Check if media is read only rating i.e. user already rated on this media
+ *
+ * @param $media_id
+ *
+ * @return bool|null
+ */
 function mpp_rating_is_read_only_media_rating( $media_id ) {
 
 	if ( ! $media_id ) {
@@ -123,17 +142,17 @@ function mpp_rating_is_read_only_media_rating( $media_id ) {
 
 	if ( ! mpp_rating_current_user_can_rate() || mpp_rating_has_user_rated( get_current_user_id(), $media_id ) ) {
 		return true;
-	} else {
-		return false;
 	}
 
+	return false;
 }
 
-
 /**
- * @param array $ids
- * @param int $interval
- * @param int $limit
+ * Get top rated media
+ *
+ * @param array $ids        Media ids.
+ * @param int   $interval   Interval.
+ * @param int   $limit      Limit.
  *
  * @return array|bool
  */
@@ -156,9 +175,13 @@ function mpp_rating_get_top_rated_media( $ids = array(), $interval = 7, $limit =
 	}
 
 	return wp_list_pluck( $media_ids, 'media_id' );
-
 }
 
+/**
+ * Get component that can be rated
+ *
+ * @return array
+ */
 function mpp_rating_get_rateable_components() {
 
 	$component_can_be_rated = array(
@@ -173,6 +196,11 @@ function mpp_rating_get_rateable_components() {
 	return apply_filters( 'mpp_rating_component_can_be_rated', $component_can_be_rated );
 }
 
+/**
+ * Get rating permissions.
+ *
+ * @return array
+ */
 function mpp_rating_get_rating_permissions() {
 
 	$who_can_rate = array(
@@ -183,6 +211,12 @@ function mpp_rating_get_rating_permissions() {
 	return apply_filters( 'mpp_rating_who_can_rate', $who_can_rate  );
 }
 
+/**
+ * Rating html
+ *
+ * @param int $media_id Media id.
+ * @param int $readonly Read on mode.
+ */
 function mpp_rating_get_rating_html( $media_id, $readonly ) {
 
 	$average = mpp_rating_get_average_rating( $media_id );
@@ -200,8 +234,12 @@ function mpp_rating_get_rating_html( $media_id, $readonly ) {
 	<?php
 }
 
+/**
+ * List media of items like logged_in user or displayed user for BuddyPress
+ *
+ * @return array
+ */
 function mpp_rating_show_media_of() {
-
 	return array(
 		'loggedin'  => __( 'Logged In User', 'mpp-media-rating'),
 		'displayed' => __( 'Displayed User', 'mpp-media-rating'),
@@ -210,11 +248,11 @@ function mpp_rating_show_media_of() {
 }
 
 /**
- * Gte an associative array of time duration options
+ * Get an associative array of time duration options
+ *
  * @return array
  */
 function mpp_rating_get_intervals() {
-
 	return array(
 		7   => __( 'Last weak', 'mpp-media-rating'),
 		30  => __( 'Last month', 'mpp-media-rating'),
