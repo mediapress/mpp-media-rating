@@ -96,6 +96,7 @@ class MPP_Media_Rating_Helper {
 			'core/mpp-rating-actions.php',
 			'core/mpp-rating-ajax-handler.php',
 			'core/mpp-rating-widget.php',
+			'core/mpp-rating-shortcode.php',
 		);
 
 		if ( function_exists( 'buddypress' ) ) {

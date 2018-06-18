@@ -151,21 +151,41 @@ function mpp_rating_is_read_only_media_rating( $media_id ) {
 }
 
 /**
+ * Get media ids
+ *
+ * @param array $args Array values.
+ *
+ * @return array
+ */
+function mpp_rating_get_media_ids( $args ) {
+	$args = wp_parse_args( $args, array(
+		'component'    => 'members',
+		'component_id' => false,
+		'status'       => 'public',
+		'type'         => 'photo',
+	) );
+
+	$args['post_status'] = 'inherit';
+
+	$media_ids = mpp_get_object_ids( $args, mpp_get_media_post_type() );
+
+	return $media_ids;
+}
+
+/**
  * Get top rated media
  *
- * @param array $ids        Media ids.
- * @param int   $interval   Interval.
- * @param int   $limit      Limit.
+ * @param array $args     Media args.
+ * @param int   $interval Interval.
+ * @param int   $limit    Limit.
  *
  * @return array|bool
  */
-function mpp_rating_get_top_rated_media( $ids = array(), $interval = 7, $limit = 5 ) {
+function mpp_rating_get_top_rated_media( $args = array(), $interval = 7, $limit = 5 ) {
 
 	global $wpdb;
 
-	if ( empty( $ids ) ) {
-		return false;
-	}
+	$ids = mpp_rating_get_media_ids( $args );
 
 	$interval = absint( $interval );
 

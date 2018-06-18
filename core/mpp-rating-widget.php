@@ -73,9 +73,7 @@ class MPP_Rating_Widget extends WP_Widget {
 
 		$media_args['component_id'] = $component_id;
 
-		$media_ids = mpp_get_object_ids( $media_args, mpp_get_media_post_type() );
-
-		$rated_media = mpp_rating_get_top_rated_media( $media_ids, $instance['interval'], $instance['max_to_list'] );
+		$rated_media = mpp_rating_get_top_rated_media( $media_args, $instance['interval'], $instance['max_to_list'] );
 
 		echo $args['before_widget'];
 
@@ -97,10 +95,10 @@ class MPP_Rating_Widget extends WP_Widget {
                             </a>
                         </div>
                         <a href="<?php mpp_media_permalink( $media_id ); ?>" <?php echo mpp_get_media_html_attributes( array(
-					        'class'            => "mpp-item-title mpp-media-title",
-					        'data-mpp-context' => 'widget',
-                            'media' => $media_id,
-				        ) ); ?> >
+		                    'class'            => "mpp-item-title mpp-media-title",
+		                    'data-mpp-context' => 'widget',
+		                    'media'            => $media_id,
+	                    ) ); ?> >
 					        <?php mpp_media_title( $media_id ); ?>
                         </a>
                         <div class="mpp-item-meta mpp-media-meta mpp-media-widget-item-meta mpp-media-meta-bottom mpp-media-widget-item-meta-bottom">
