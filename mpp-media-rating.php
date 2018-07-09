@@ -8,7 +8,7 @@
 /**
  * Plugin Name: MediaPress Media Rating
  * Plugin URI: https://buddydev.com/plugins/mpp-media-rating/
- * Version: 1.0.5
+ * Version: 1.0.6
  * Description: Used with MediaPress for rating on media.
  * Author: BuddyDev
  * Author URI: https://buddydev.com/
