@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function mpp_rating_modify_default_args( $default ) {
 	$default['top-rated'] = 0;
+	$default['rating-interval'] = 7;
 	return $default;
 }
 
@@ -34,12 +35,13 @@ add_filter( 'mpp_shortcode_list_media_defaults', 'mpp_rating_modify_default_args
 function mpp_rating_modify_media_args( $atts ) {
 
 	if ( isset( $atts['top-rated'] ) && 1 == $atts['top-rated'] ) {
+
 		$media_ids = mpp_rating_get_top_rated_media( array(
 			'component'    => $atts['component'],
 			'component_id' => $atts['component_id'],
 			'status'       => $atts['status'],
 			'type'         => $atts['type'],
-		) );
+		), $atts['rating-interval'], $atts['per_page'] );
 
 		$atts['in'] = $media_ids;
 		$atts['orderby'] = 'post__in';
