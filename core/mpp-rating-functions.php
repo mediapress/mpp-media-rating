@@ -189,11 +189,12 @@ function mpp_rating_get_top_rated_media( $args = array(), $interval = 7, $limit 
 	$interval = absint( $interval );
 	$ids      = join( ',', $ids );
 
+	$limit_query = '';
 	if ( ! empty( $limit ) ) {
-		$limit = $wpdb->prepare( 'LIMIT 0 , %d', $limit );
+		$limit_query = $wpdb->prepare( 'LIMIT 0 , %d', $limit );
     }
 
-	$query     = $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY avg( rating ) DESC {$limit}", $interval );
+	$query     = $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY avg( rating ) DESC {$limit_query}", $interval );
 	$media_ids = $wpdb->get_results( $query, 'ARRAY_A' );
 
 	if ( empty( $media_ids ) ) {
