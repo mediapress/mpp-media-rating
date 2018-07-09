@@ -43,7 +43,8 @@ function mpp_rating_modify_media_args( $atts ) {
 			'type'         => $atts['type'],
 		), $atts['rating-interval'], $atts['per_page'] );
 
-		$atts['in'] = $media_ids;
+		$media_ids       = ( $media_ids ) ? $media_ids : array( 0 );
+		$atts['in']      = $media_ids;
 		$atts['orderby'] = 'post__in';
 	}
 
