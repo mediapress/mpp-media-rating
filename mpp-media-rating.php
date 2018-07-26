@@ -1,19 +1,15 @@
 <?php
 /**
- * Main plugin file
- *
- * @package mpp-media-rating
- */
-
-/**
  * Plugin Name: MediaPress Media Rating
  * Plugin URI: https://buddydev.com/plugins/mpp-media-rating/
- * Version: 1.0.7
+ * Version: 1.0.8
  * Description: Used with MediaPress for rating on media.
  * Author: BuddyDev
  * Author URI: https://buddydev.com/
  * License: GPL
  * Text Domain: mpp-media-rating
+ *
+ * @package mpp-media-rating
  **/
 
 // Exit if the file is accessed directly over web.
