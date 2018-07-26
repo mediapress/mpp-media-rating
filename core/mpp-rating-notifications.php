@@ -110,7 +110,7 @@ Class MPP_Rating_Notifications {
 		$link  = mpp_get_media_permalink( $item_id );
 		$title = mpp_get_media_title( $item_id );
 
-		$text = sprintf( __( '<a href="%s"> %s has rated %d star on %s </a>', 'buddy-wall' ), $link, $name, $vote_given, $title );
+		$text = sprintf( '<a href="%s"> %s has rated %d star on %s </a>', $link, $name, $vote_given, $title );
 
 		return $text;
 	}

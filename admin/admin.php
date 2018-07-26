@@ -25,7 +25,7 @@ class MPP_Media_Rating_Admin {
 
 	    if ( ! empty( $active_types ) ) {
 		    foreach ( $active_types as $type => $value ) {
-			    $rateable_types[ $type ]  = __( $value->label, 'mpp-media-rating' );
+			    $rateable_types[ $type ]  = $value->label;
 		    }
 	    }
 
