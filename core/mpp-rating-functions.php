@@ -287,7 +287,7 @@ function mpp_rating_show_media_of() {
 function mpp_rating_get_intervals() {
 
 	$intervals = array(
-		7   => __( 'Last weak', 'mpp-media-rating' ),
+		7   => __( 'Last week', 'mpp-media-rating' ),
 		30  => __( 'Last month', 'mpp-media-rating' ),
 		365 => __( 'Last Year', 'mpp-media-rating' ),
 	);

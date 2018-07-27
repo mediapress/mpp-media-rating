@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *  MPP rating widget for displaying
  *  Top n media of a user
  *  Top n photos of a user
- *  Top n media last weak, month, year
+ *  Top n media last week, month, year
  */
 
 /**
@@ -28,7 +28,7 @@ class MPP_Rating_Widget extends WP_Widget {
 	public function __construct() {
 
 		$widget_ops = array(
-			'description' => __( 'A Widget for displaying top n media of user, photos of user, weak, month, year ', 'mpp-media-rating' ),
+			'description' => __( 'A Widget for displaying top n media of user, photos of user, week, month, year ', 'mpp-media-rating' ),
 		);
 
 		parent::__construct( false, _x( 'Top Rated Media( MediaPress )', 'widget name', 'mpp-media-rating' ), $widget_ops );
@@ -154,7 +154,7 @@ class MPP_Rating_Widget extends WP_Widget {
 			'type'        => 'photo',
 			'max_to_list' => 5,
 			'user_type'   => 'displayed',
-			'interval'    => 'lweak',
+			'interval'    => 'lweek',
 		);
 
 		$instance            = wp_parse_args( (array) $instance, $defaults );
@@ -198,7 +198,7 @@ class MPP_Rating_Widget extends WP_Widget {
                 <select name="<?php echo $this->get_field_name( 'type' ); ?>">
 					<?php foreach ( $active_types as $key => $label ) : ?>
                         <option value="<?php echo $key ?>" <?php selected( $type, $key ) ?>>
-							<?php _e( $label->label, 'mpp-media-rating' ); ?>
+							<?php echo $label->label; ?>
                         </option>
 					<?php endforeach; ?>
                 </select>
@@ -213,7 +213,7 @@ class MPP_Rating_Widget extends WP_Widget {
                 <select name="<?php echo $this->get_field_name( 'status' ); ?>">
 					<?php foreach ( $active_statuses as $key => $label ) : ?>
                         <option value="<?php echo $key ?>" <?php selected( $status, $key ) ?>>
-							<?php _e( $label->label, 'mpp-media-rating' ); ?>
+							<?php echo $label->label; ?>
                         </option>
 					<?php endforeach; ?>
                 </select>
@@ -222,25 +222,25 @@ class MPP_Rating_Widget extends WP_Widget {
 
         <p>
             <label>
-				<?php echo __( 'Max media to show', 'mpp-media-rating' ) ?>
+				<?php _e( 'Max media to show', 'mpp-media-rating' ) ?>
                 <input type="number" name="<?php echo $this->get_field_name( 'max_to_list' ); ?>"
                        value="<?php echo esc_attr( $max_to_list ); ?>"/>
             </label>
         </p>
 
         <p>
-			<?php echo __( 'Interval: ', 'mpp-media-rating' ) ?>
+			<?php _e( 'Interval: ', 'mpp-media-rating' ) ?>
             <select name="<?php echo $this->get_field_name( 'interval' ); ?>">
 				<?php foreach ( $intervals as $key => $label ) : ?>
                     <option value="<?php echo $key ?>" <?php selected( $interval, $key ) ?>>
-						<?php _e( $label, 'mpp-media-rating' ); ?>
+						<?php echo $label; ?>
                     </option>
 				<?php endforeach; ?>
             </select>
         </p>
 
         <p>
-			<?php echo __( 'List media of: ', 'mpp-media-rating' ) ?>
+			<?php _e( 'List media of: ', 'mpp-media-rating' ) ?>
 			<?php foreach ( $media_of as $key => $label ): ?>
                 <label>
                     <input name="<?php echo $this->get_field_name( 'user_type' ); ?>" type="radio"
