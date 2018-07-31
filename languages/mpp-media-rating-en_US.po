@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2018-07-31 09:40+0530\n"
-"PO-Revision-Date: 2018-07-31 09:41+0530\n"
+"Project-Id-Version: MPP Media Rating\n"
+"POT-Creation-Date: 2018-07-31 09:42+0530\n"
+"PO-Revision-Date: 2018-07-31 09:42+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: es\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,35 +17,35 @@ msgstr ""
 
 #: admin/admin.php:35
 msgid "Enabled for Components"
-msgstr "Habilitado para componentes"
+msgstr ""
 
 #: admin/admin.php:41
 msgid "Enabled for Types"
-msgstr "Habilitado para tipos"
+msgstr ""
 
 #: admin/admin.php:47
 msgid "Who Can Rate"
-msgstr "Quien puede calificar"
+msgstr ""
 
 #: admin/admin.php:53
 msgid "Appearance"
-msgstr "Apariencia"
+msgstr ""
 
 #: admin/admin.php:56
 msgid "Single Media Page"
-msgstr "Página de un solo archivo"
+msgstr ""
 
 #: admin/admin.php:57
 msgid "LightBox"
-msgstr "LightBox"
+msgstr ""
 
 #: admin/admin.php:58
 msgid "Single Gallery"
-msgstr "Galería Única"
+msgstr ""
 
 #: admin/admin.php:64
 msgid "Media Rating Setting"
-msgstr "Configuración para calificar archivos"
+msgstr ""
 
 #: core/mpp-rating-ajax-handler.php:38
 msgid "Invalid request."
@@ -61,52 +61,50 @@ msgstr ""
 
 #: core/mpp-rating-functions.php:233
 msgid "Anyone"
-msgstr "Cualquiera"
+msgstr ""
 
 #: core/mpp-rating-functions.php:234
 msgid "Logged In"
-msgstr "Inició sesión"
+msgstr ""
 
 #: core/mpp-rating-functions.php:271
 msgid "Logged In User"
-msgstr "Usuario con sesión iniciada"
+msgstr ""
 
 #: core/mpp-rating-functions.php:272
 msgid "Any"
-msgstr "Cualquier"
+msgstr ""
 
 #: core/mpp-rating-functions.php:276
 msgid "Displayed User"
-msgstr "Usuario a mostrar"
+msgstr ""
 
 #: core/mpp-rating-functions.php:290
 msgid "Last week"
-msgstr "Año pasado"
+msgstr ""
 
 #: core/mpp-rating-functions.php:291
 msgid "Last month"
-msgstr "Mes pasado"
+msgstr ""
 
 #: core/mpp-rating-functions.php:292
 msgid "Last Year"
-msgstr "Año pasado"
+msgstr ""
 
 #: core/mpp-rating-notifications.php:108
 msgid "Anonymous User"
-msgstr "Usuario Anónimo"
+msgstr ""
 
 #: core/mpp-rating-notifications.php:113
 #, php-format
 msgid "<a href=\"%s\"> %s has rated %d star on %s </a>"
-msgstr "<a href=\"%s\"> %s ha calificado %d estrellas en %s </a>"
+msgstr ""
 
 #: core/mpp-rating-widget.php:31
 msgid ""
 "A Widget for displaying top n media of user, photos of user, week, month, "
 "year "
 msgstr ""
-"Un widget para mostrar los n mejores archivos del usuario, fotos del "
-"usuario, semana, mes, año "
 
 #: core/mpp-rating-widget.php:34
 msgctxt "widget name"
@@ -115,56 +113,40 @@ msgstr ""
 
 #: core/mpp-rating-widget.php:111
 msgid "Nothing to show"
-msgstr "Máximo de archivos a mostrar"
+msgstr ""
 
 #: core/mpp-rating-widget.php:151
 msgid "Ratings"
-msgstr "Calificaciones"
+msgstr ""
 
 #: core/mpp-rating-widget.php:178
 msgid "Title:"
-msgstr "Título:"
+msgstr ""
 
-#
-# 20/5000
-# Sin tipos de medios activos
 #: core/mpp-rating-widget.php:185
 msgid "Select Component: "
-msgstr "Seleccionar componente: "
+msgstr ""
 
 #: core/mpp-rating-widget.php:196
 msgid "Select Type: "
-msgstr "Seleccione tipo: "
+msgstr ""
 
-#  Sin tipos de medios activos
 #: core/mpp-rating-widget.php:206
 msgid "No Active Media Type!"
-msgstr "¡Sin tipo de medios activos!"
+msgstr ""
 
 #: core/mpp-rating-widget.php:211
 msgid "Select Status: "
-msgstr "Seleccionar estado:"
+msgstr ""
 
 #: core/mpp-rating-widget.php:225
 msgid "Max media to show"
-msgstr "Máximo de archivos a mostrar"
+msgstr ""
 
 #: core/mpp-rating-widget.php:232
 msgid "Interval: "
-msgstr "Intervalo: "
+msgstr ""
 
 #: core/mpp-rating-widget.php:243
 msgid "List media of: "
-msgstr "Listar los archivos de: "
-
-#~ msgid "Invalid request"
-#~ msgstr "Petición inválida"
-
-#~ msgid "You have already rated"
-#~ msgstr "Ya has calificado"
-
-#~ msgid "Unable to add"
-#~ msgstr "Imposible agregar"
-
-#~ msgid "Top Rated Media( MediaPress )"
-#~ msgstr "Archivos mejor calificados (MediaPress)"
+msgstr ""
