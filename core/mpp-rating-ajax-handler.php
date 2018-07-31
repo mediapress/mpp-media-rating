@@ -35,7 +35,7 @@ class MPP_Media_Rating_Ajax_Handler {
 
 		if ( ! mpp_rating_current_user_can_rate() || ! mpp_rating_is_media_rateable( $media_id ) ) {
 			wp_send_json_error( array(
-				'message' => __( 'Invalid request', 'mpp-media-rating' ),
+				'message' => __( 'Invalid request.', 'mpp-media-rating' ),
 			) );
 		}
 
@@ -58,7 +58,7 @@ class MPP_Media_Rating_Ajax_Handler {
 
 		if ( mpp_rating_has_user_rated( $user_id, $media_id ) ) {
 			wp_send_json_error( array(
-				'message' => __( 'You have already rated', 'mpp-media-rating' ),
+				'message' => __( 'You have already rated.', 'mpp-media-rating' ),
 			) );
 		}
 
@@ -74,7 +74,7 @@ class MPP_Media_Rating_Ajax_Handler {
 
 		if ( is_null( $insert ) ) {
 			wp_send_json_error( array(
-				'message' => __( 'Unable to add', 'mpp-media-rating' ),
+				'message' => __( 'Unable to add.', 'mpp-media-rating' ),
 			) );
 		}
 

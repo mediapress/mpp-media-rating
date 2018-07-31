@@ -53,7 +53,7 @@ Class MPP_Rating_Notifications {
 			'user_id'           => $media->user_id,
 			'component_name'    => $bp->mpp_rating_notifier->id,
 			'component_action'  => 'new_mpp_ratings_' . $media->id,
-			'secondary_item_id' => $user_id
+			'secondary_item_id' => $user_id,
 		) );
 
 		if ( $notification_id ) {
@@ -110,7 +110,7 @@ Class MPP_Rating_Notifications {
 		$link  = mpp_get_media_permalink( $item_id );
 		$title = mpp_get_media_title( $item_id );
 
-		$text = sprintf( '<a href="%s"> %s has rated %d star on %s </a>', $link, $name, $vote_given, $title );
+		$text = sprintf( __( '<a href="%s"> %s has rated %d star on %s </a>', 'mpp-media-rating' ), $link, $name, $vote_given, $title );
 
 		return $text;
 	}
