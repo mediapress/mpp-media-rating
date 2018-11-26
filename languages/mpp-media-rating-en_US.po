@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MPP Media Rating\n"
-"POT-Creation-Date: 2018-07-31 09:42+0530\n"
-"PO-Revision-Date: 2018-07-31 09:42+0530\n"
+"POT-Creation-Date: 2018-11-26 20:50+0530\n"
+"PO-Revision-Date: 2018-11-26 20:50+0530\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -115,38 +115,42 @@ msgstr ""
 msgid "Nothing to show"
 msgstr ""
 
-#: core/mpp-rating-widget.php:151
+#: core/mpp-rating-widget.php:149
 msgid "Ratings"
 msgstr ""
 
-#: core/mpp-rating-widget.php:178
+#: core/mpp-rating-widget.php:176
 msgid "Title:"
 msgstr ""
 
-#: core/mpp-rating-widget.php:185
+#: core/mpp-rating-widget.php:183
 msgid "Select Component: "
 msgstr ""
 
-#: core/mpp-rating-widget.php:196
+#: core/mpp-rating-widget.php:194
 msgid "Select Type: "
 msgstr ""
 
-#: core/mpp-rating-widget.php:206
+#: core/mpp-rating-widget.php:204
 msgid "No Active Media Type!"
 msgstr ""
 
-#: core/mpp-rating-widget.php:211
+#: core/mpp-rating-widget.php:209
 msgid "Select Status: "
 msgstr ""
 
-#: core/mpp-rating-widget.php:225
+#: core/mpp-rating-widget.php:212
+msgid "All"
+msgstr ""
+
+#: core/mpp-rating-widget.php:224
 msgid "Max media to show"
 msgstr ""
 
-#: core/mpp-rating-widget.php:232
+#: core/mpp-rating-widget.php:231
 msgid "Interval: "
 msgstr ""
 
-#: core/mpp-rating-widget.php:243
+#: core/mpp-rating-widget.php:242
 msgid "List media of: "
 msgstr ""
