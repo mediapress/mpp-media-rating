@@ -148,7 +148,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		$defaults = array(
 			'title'       => __( 'Ratings', 'mpp-media-rating' ),
 			'component'   => 'members',
-			'status'      => 'public',
+			'status'      => '',
 			'type'        => 'photo',
 			'max_to_list' => 5,
 			'user_type'   => 'displayed',
@@ -209,6 +209,7 @@ class MPP_Rating_Widget extends WP_Widget {
 			<?php _e( 'Select Status: ', 'mpp-media-rating' ); ?>
 			<?php if ( ! empty( $active_statuses ) ): ?>
 				<select name="<?php echo $this->get_field_name( 'status' ); ?>">
+                    <option value="" <?php selected( $status, '' ) ?>><?php _e( 'All', 'mpp-media-rating' );?></option>
 					<?php foreach ( $active_statuses as $key => $label ) : ?>
 						<option value="<?php echo $key ?>" <?php selected( $status, $key ) ?>>
 							<?php echo $label->label; ?>

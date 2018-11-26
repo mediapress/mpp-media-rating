@@ -161,7 +161,7 @@ function mpp_rating_get_media_ids( $args ) {
 	$args = wp_parse_args( $args, array(
 		'component'    => 'members',
 		'component_id' => false,
-		'status'       => 'public',
+		'status'       => '',
 		'type'         => 'photo',
 	) );
 
