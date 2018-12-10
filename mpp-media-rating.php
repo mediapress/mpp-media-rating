@@ -188,7 +188,6 @@ class MPP_Media_Rating_Helper {
 	public function get_url() {
 		return $this->url;
 	}
-
 }
 
 /**

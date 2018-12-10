@@ -43,7 +43,6 @@ class MPP_Rating_Widget extends WP_Widget {
 	 * @return string
 	 */
 	public function widget( $args, $instance ) {
-
 		// For widget call using the_widget function.
 		if ( empty( $instance ) ) {
 			return '';
@@ -76,7 +75,6 @@ class MPP_Rating_Widget extends WP_Widget {
 		$rated_media = mpp_rating_get_top_rated_media( $media_args, $instance['interval'], $instance['max_to_list'] );
 
 		echo $args['before_widget'];
-
 		echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title'];
 
 		?>

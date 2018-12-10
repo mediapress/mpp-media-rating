@@ -5,6 +5,11 @@
  * @package mpp-media-rating
  */
 
+// Exit if the file is accessed directly over web.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class MPP_Media_Rating_Actions_Helper
  */

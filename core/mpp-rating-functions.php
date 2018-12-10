@@ -5,7 +5,7 @@
  * @package mpp-media-rating
  */
 
-// Exit if file access directly over web.
+// Exit if file accessed directly over web.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -182,14 +182,17 @@ function mpp_rating_get_media_ids( $args ) {
  * @return array|bool
  */
 function mpp_rating_get_top_rated_media( $args = array(), $interval = 7, $limit = 0 ) {
+    global $wpdb;
 
-	global $wpdb;
+    $ids = mpp_rating_get_media_ids( $args );
+    if ( empty( $ids ) ) {
+	    return false;
+    }
 
-	$ids      = mpp_rating_get_media_ids( $args );
-	$interval = absint( $interval );
-	$ids      = join( ',', $ids );
-
+	$interval    = absint( $interval );
+	$ids         = join( ',', $ids );
 	$limit_query = '';
+
 	if ( ! empty( $limit ) ) {
 		$limit_query = $wpdb->prepare( 'LIMIT 0 , %d', $limit );
     }

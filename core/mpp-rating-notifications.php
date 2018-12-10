@@ -5,7 +5,7 @@
  * @package mpp-media-rating
  */
 
-// Exit if file access directly over web
+// Exit if file accessed directly over web
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
