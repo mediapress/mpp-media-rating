@@ -3,7 +3,7 @@ Contributors: BuddyDev, raviousprime
 Tags: mediapress, buddypress
 Requires at least: 4.0
 Tested up to: 4.6.1
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,9 @@ We request you to use [BuddyDev Forums](https://buddydev.com/support/forums/) fo
 5. In lightbox screenshot-5.jpg
 
 == Changelog ==
+
+= 1.1.2 =
+ * Added support for showing top rated media by total rating
 
 = 1.0.7 =
  * Fix shortcode bug when no top-rated media found
