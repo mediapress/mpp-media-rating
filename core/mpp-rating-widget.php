@@ -72,7 +72,9 @@ class MPP_Rating_Widget extends WP_Widget {
 
 		$media_args['component_id'] = $component_id;
 
-		$rated_media = mpp_rating_get_top_rated_media( $media_args, $instance['interval'], $instance['max_to_list'] );
+		$criteria = isset( $instance['criteria'] ) ? $instance['criteria'] : 'average';
+
+		$rated_media = mpp_rating_get_top_rated_media( $media_args, $instance['interval'], $instance['max_to_list'], $criteria );
 
 		echo $args['before_widget'];
 		echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title'];
@@ -132,6 +134,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		$instance['max_to_list'] = $new_instance['max_to_list'];
 		$instance['user_type']   = $new_instance['user_type'];
 		$instance['interval']    = $new_instance['interval'];
+		$instance['criteria']    = $new_instance['criteria'];
 
 		return $instance;
 	}
@@ -151,6 +154,7 @@ class MPP_Rating_Widget extends WP_Widget {
 			'max_to_list' => 5,
 			'user_type'   => 'displayed',
 			'interval'    => 'lweek',
+			'criteria'    => 'average',
 		);
 
 		$instance            = wp_parse_args( (array) $instance, $defaults );
@@ -161,6 +165,7 @@ class MPP_Rating_Widget extends WP_Widget {
 		$max_to_list         = strip_tags( $instance['max_to_list'] );
 		$user_type           = $instance['user_type'];
 		$interval            = $instance['interval'];
+		$criteria            = $instance['criteria'];
 		$active_types        = mpp_get_active_types();
 		$active_statuses     = mpp_get_active_statuses();
 		$rateable_components = mpp_rating_get_rateable_components();
@@ -235,6 +240,14 @@ class MPP_Rating_Widget extends WP_Widget {
 				<?php endforeach; ?>
 			</select>
 		</p>
+
+        <p>
+			<?php _e( 'Order By: ', 'mpp-media-rating' ) ?>
+            <select name="<?php echo $this->get_field_name( 'criteria' ); ?>">
+                <option value="average" <?php selected( $criteria, 'average' ) ?>><?php _e( 'By Average Rating', 'mpp-media-rating' ); ?></option>
+                <option value="total" <?php selected( $criteria, 'total' ) ?>><?php _e( 'By Total Rating', 'mpp-media-rating' ); ?></option>
+            </select>
+        </p>
 
 		<p>
 			<?php _e( 'List media of: ', 'mpp-media-rating' ) ?>

@@ -181,7 +181,7 @@ function mpp_rating_get_media_ids( $args ) {
  *
  * @return array|bool
  */
-function mpp_rating_get_top_rated_media( $args = array(), $interval = 7, $limit = 0 ) {
+function mpp_rating_get_top_rated_media( $args = array(), $interval = 7, $limit = 0, $criteria = 'average' ) {
     global $wpdb;
 
     $ids = mpp_rating_get_media_ids( $args );
@@ -197,7 +197,9 @@ function mpp_rating_get_top_rated_media( $args = array(), $interval = 7, $limit 
 		$limit_query = $wpdb->prepare( 'LIMIT 0 , %d', $limit );
     }
 
-	$query     = $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY avg( rating ) DESC {$limit_query}", $interval );
+	$criteria = 'total' == $criteria ? 'sum' : 'avg';
+
+	$query     = $wpdb->prepare( "SELECT media_id FROM {$wpdb->prefix}mpp_media_rating WHERE 1 =1 AND ( date >= DATE(NOW()) - INTERVAL %d DAY ) AND media_id IN ( {$ids} ) GROUP BY media_id ORDER BY {$criteria}( rating ) DESC {$limit_query}", $interval );
 	$media_ids = $wpdb->get_results( $query, 'ARRAY_A' );
 
 	if ( empty( $media_ids ) ) {
